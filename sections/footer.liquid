@@ -1,0 +1,211 @@
+<footer class="footer full-width">
+  <div class="container">
+    <div class="footer__top">
+      {%- comment -%} Logo & tagline {%- endcomment -%}
+      <div class="footer__brand">
+        <a href="{{ routes.root_url }}" class="footer__logo">
+          <span class="footer__logo-tcp">TCP</span>
+          <span class="footer__logo-clothing">CLOTHING</span>
+        </a>
+        <p class="footer__tagline">{{ section.settings.tagline }}</p>
+      </div>
+
+      {%- comment -%} Link columns {%- endcomment -%}
+      <div class="footer__columns">
+        <div class="footer__column">
+          <h4 class="footer__column-title">SHOP</h4>
+          <ul>
+            <li><a href="/collections/new-in">New In</a></li>
+            <li><a href="/collections/swimwear">Swimwear</a></li>
+            <li><a href="/collections/linen">Linen</a></li>
+            <li><a href="/collections/festival">Festival</a></li>
+            <li><a href="/collections/sale">Sale</a></li>
+          </ul>
+        </div>
+        <div class="footer__column">
+          <h4 class="footer__column-title">HELP</h4>
+          <ul>
+            <li><a href="/pages/contact">Contact Us</a></li>
+            <li><a href="/pages/shipping">Shipping</a></li>
+            <li><a href="/pages/returns">Returns</a></li>
+            <li><a href="/pages/size-guide">Size Guide</a></li>
+            <li><a href="/pages/faq">FAQ</a></li>
+          </ul>
+        </div>
+        <div class="footer__column">
+          <h4 class="footer__column-title">ABOUT</h4>
+          <ul>
+            <li><a href="/pages/our-story">Our Story</a></li>
+            <li><a href="/pages/sustainability">Sustainability</a></li>
+            <li><a href="/blogs/journal">Journal</a></li>
+            <li><a href="/pages/careers">Careers</a></li>
+          </ul>
+        </div>
+        <div class="footer__column">
+          <h4 class="footer__column-title">LEGAL</h4>
+          <ul>
+            <li><a href="/policies/privacy-policy">Privacy Policy</a></li>
+            <li><a href="/policies/terms-of-service">Terms of Service</a></li>
+            <li><a href="/pages/cookies">Cookie Policy</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer__divider"></div>
+
+    <div class="footer__bottom">
+      <p class="footer__copyright">&copy; {{ 'now' | date: '%Y' }} TCP Clothing. All rights reserved.</p>
+      <div class="footer__flags">
+        <span>🇬🇧</span>
+        <span>🇫🇷</span>
+        <span>🇳🇱</span>
+        <span>🇩🇪</span>
+        <span>🇪🇸</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+{% stylesheet %}
+  .footer {
+    background-color: #0F0F0F;
+    color: #FFFFFF;
+    padding: 64px 0 32px;
+    margin-top: auto;
+  }
+
+  .footer a {
+    color: #9A9A9A;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer a:hover {
+    color: #FFFFFF;
+  }
+
+  .footer__top {
+    display: grid;
+    grid-template-columns: 1.2fr 2fr;
+    gap: 64px;
+    margin-bottom: 48px;
+  }
+
+  .footer__brand {}
+
+  .footer__logo {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    color: #FFFFFF;
+    margin-bottom: 16px;
+  }
+
+  .footer__logo-tcp {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+  }
+
+  .footer__logo-clothing {
+    font-size: 0.625rem;
+    font-weight: 400;
+    letter-spacing: 3px;
+  }
+
+  .footer__tagline {
+    font-size: 0.8125rem;
+    color: #9A9A9A;
+    line-height: 1.6;
+  }
+
+  .footer__columns {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+  }
+
+  .footer__column-title {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+    color: #FFFFFF;
+  }
+
+  .footer__column ul {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .footer__column a {
+    font-size: 0.8125rem;
+  }
+
+  .footer__divider {
+    height: 1px;
+    background-color: #2A2A2A;
+    margin-bottom: 24px;
+  }
+
+  .footer__bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer__copyright {
+    font-size: 0.75rem;
+    color: #666;
+  }
+
+  .footer__flags {
+    display: flex;
+    gap: 8px;
+    font-size: 1.25rem;
+  }
+
+  @media (max-width: 768px) {
+    .footer__top {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+
+    .footer__columns {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .footer__bottom {
+      flex-direction: column;
+      gap: 16px;
+      text-align: center;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Tagline",
+      "default": "European summer fashion. UK \u00b7 France \u00b7 Netherlands"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Footer menu"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment_icons",
+      "label": "Show payment icons",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,157 @@
+<section class="instagram" style="padding: var(--section-spacing) 0;">
+  <div class="container">
+    <div class="instagram__header">
+      <h2 class="instagram__title">{{ section.settings.heading }}</h2>
+      <a href="{{ section.settings.profile_url }}" class="instagram__handle" target="_blank" rel="noopener">{{ section.settings.handle }}</a>
+    </div>
+
+    <div class="instagram__grid">
+      {% for block in section.blocks %}
+        <a href="{{ section.settings.profile_url }}" class="instagram__item" target="_blank" rel="noopener" {{ block.shopify_attributes }}>
+          {% if block.settings.image %}
+            {{ block.settings.image | image_url: width: 400 | image_tag: loading: 'lazy' }}
+          {% else %}
+            <div class="instagram__placeholder">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+              </svg>
+            </div>
+          {% endif %}
+          <div class="instagram__overlay">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+            </svg>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .instagram__header {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .instagram__title {
+    font-weight: 300;
+    margin-bottom: 8px;
+  }
+
+  .instagram__handle {
+    font-size: 0.8125rem;
+    color: var(--color-medium-gray);
+    text-decoration: none;
+  }
+
+  .instagram__handle:hover {
+    color: var(--color-accent);
+  }
+
+  .instagram__grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+  }
+
+  .instagram__item {
+    position: relative;
+    display: block;
+    aspect-ratio: 1;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .instagram__item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  .instagram__item:hover img {
+    transform: scale(1.05);
+  }
+
+  .instagram__placeholder {
+    width: 100%;
+    height: 100%;
+    background: var(--color-light-gray);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-medium-gray);
+  }
+
+  .instagram__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .instagram__item:hover .instagram__overlay {
+    opacity: 1;
+  }
+
+  @media (max-width: 768px) {
+    .instagram__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Instagram Feed",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Follow Us"
+    },
+    {
+      "type": "text",
+      "id": "handle",
+      "label": "Instagram handle",
+      "default": "@tcpclothing"
+    },
+    {
+      "type": "url",
+      "id": "profile_url",
+      "label": "Instagram profile URL"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Instagram Feed",
+      "blocks": [
+        { "type": "image" },
+        { "type": "image" },
+        { "type": "image" },
+        { "type": "image" },
+        { "type": "image" }
+      ]
+    }
+  ]
+}
+{% endschema %}

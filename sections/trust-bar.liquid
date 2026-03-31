@@ -1,0 +1,150 @@
+<section class="trust-bar" style="padding: var(--section-spacing) 0;">
+  <div class="container">
+    <div class="trust-bar__items">
+      {% for block in section.blocks %}
+        {% unless forloop.first %}<div class="trust-bar__divider"></div>{% endunless %}
+        <div class="trust-bar__item" {{ block.shopify_attributes }}>
+          <div class="trust-bar__icon">
+            {% case block.settings.icon %}
+              {% when 'shipping' %}
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>
+                </svg>
+              {% when 'returns' %}
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
+                </svg>
+              {% when 'sustainable' %}
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                </svg>
+              {% when 'payments' %}
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/>
+                </svg>
+              {% else %}
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+                </svg>
+            {% endcase %}
+          </div>
+          <h4 class="trust-bar__title">{{ block.settings.title }}</h4>
+          {% if block.settings.text != blank %}
+            <p class="trust-bar__text">{{ block.settings.text }}</p>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .trust-bar__items {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    padding: 32px 0;
+    border-top: 1px solid var(--color-light-gray);
+    border-bottom: 1px solid var(--color-light-gray);
+  }
+
+  .trust-bar__item {
+    flex: 1;
+    text-align: center;
+    padding: 0 24px;
+  }
+
+  .trust-bar__divider {
+    width: 1px;
+    height: 48px;
+    background-color: var(--color-light-gray);
+    flex-shrink: 0;
+  }
+
+  .trust-bar__icon {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 12px;
+    color: var(--color-foreground);
+  }
+
+  .trust-bar__title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 4px;
+  }
+
+  .trust-bar__text {
+    font-size: 0.75rem;
+    color: var(--color-medium-gray);
+  }
+
+  @media (max-width: 768px) {
+    .trust-bar__items {
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+
+    .trust-bar__item {
+      flex: 0 0 calc(50% - 12px);
+      padding: 0;
+    }
+
+    .trust-bar__divider {
+      display: none;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Trust Bar",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "trust_item",
+      "name": "Trust Item",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "shipping", "label": "Shipping" },
+            { "value": "returns", "label": "Returns" },
+            { "value": "sustainable", "label": "Sustainable" },
+            { "value": "payments", "label": "Payments" },
+            { "value": "check", "label": "Checkmark" }
+          ],
+          "default": "check"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Trust item"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Description"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Trust Bar",
+      "blocks": [
+        { "type": "trust_item", "settings": { "icon": "shipping", "title": "Free EU Shipping", "text": "On orders over \u00a350" } },
+        { "type": "trust_item", "settings": { "icon": "returns", "title": "30-Day Returns", "text": "Hassle-free returns" } },
+        { "type": "trust_item", "settings": { "icon": "sustainable", "title": "Sustainable Materials", "text": "Responsibly sourced" } },
+        { "type": "trust_item", "settings": { "icon": "payments", "title": "Local Payments", "text": "Pay your way" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

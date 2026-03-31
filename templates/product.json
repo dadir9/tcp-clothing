@@ -1,0 +1,41 @@
+{
+  "sections": {
+    "main": {
+      "type": "product",
+      "settings": {},
+      "blocks": {
+        "review_1": {
+          "type": "review",
+          "settings": {
+            "stars": 5,
+            "text": "Absolutely love this piece. The linen quality is incredible and the fit is perfect. Wore it all through my holiday in the South of France.",
+            "author": "James T.",
+            "location": "London, UK"
+          }
+        },
+        "review_2": {
+          "type": "review",
+          "settings": {
+            "stars": 5,
+            "text": "Superbe qualit\u00e9! Le tissu est tr\u00e8s doux et la coupe est parfaite. J'ai re\u00e7u beaucoup de compliments. Livraison rapide en France.",
+            "author": "Marie L.",
+            "location": "Paris, France"
+          }
+        },
+        "review_3": {
+          "type": "review",
+          "settings": {
+            "stars": 4,
+            "text": "Geweldige kwaliteit en snelle levering naar Nederland. De stof voelt premium aan. Zeker een aanrader voor de zomer.",
+            "author": "Daan V.",
+            "location": "Amsterdam, Netherlands"
+          }
+        }
+      },
+      "block_order": ["review_1", "review_2", "review_3"]
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

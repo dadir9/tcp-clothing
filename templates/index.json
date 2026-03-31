@@ -1,0 +1,123 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "subtitle": "SUMMER 2025",
+        "title": "The Mediterranean Collection",
+        "cta_text": "EXPLORE COLLECTION"
+      }
+    },
+    "collections_grid": {
+      "type": "collections-grid",
+      "settings": {},
+      "blocks": {
+        "collection_1": {
+          "type": "collection_card",
+          "settings": {
+            "title": "Swimwear"
+          }
+        },
+        "collection_2": {
+          "type": "collection_card",
+          "settings": {
+            "title": "Linen Edit"
+          }
+        },
+        "collection_3": {
+          "type": "collection_card",
+          "settings": {
+            "title": "Festival Wear"
+          }
+        }
+      },
+      "block_order": ["collection_1", "collection_2", "collection_3"]
+    },
+    "trending": {
+      "type": "trending-products",
+      "settings": {
+        "heading": "Trending Now",
+        "link_text": "View All"
+      }
+    },
+    "lookbook": {
+      "type": "lookbook-banner",
+      "settings": {
+        "subtitle": "EDITORIAL",
+        "title": "Summer Lookbook 2025",
+        "cta_text": "VIEW LOOKBOOK"
+      }
+    },
+    "trust": {
+      "type": "trust-bar",
+      "settings": {},
+      "blocks": {
+        "trust_1": {
+          "type": "trust_item",
+          "settings": {
+            "icon": "shipping",
+            "title": "Free EU Shipping",
+            "text": "On orders over \u00a350"
+          }
+        },
+        "trust_2": {
+          "type": "trust_item",
+          "settings": {
+            "icon": "returns",
+            "title": "30-Day Returns",
+            "text": "Hassle-free returns"
+          }
+        },
+        "trust_3": {
+          "type": "trust_item",
+          "settings": {
+            "icon": "sustainable",
+            "title": "Sustainable Materials",
+            "text": "Responsibly sourced"
+          }
+        },
+        "trust_4": {
+          "type": "trust_item",
+          "settings": {
+            "icon": "payments",
+            "title": "Local Payments",
+            "text": "Pay your way"
+          }
+        }
+      },
+      "block_order": ["trust_1", "trust_2", "trust_3", "trust_4"]
+    },
+    "instagram": {
+      "type": "instagram-feed",
+      "settings": {
+        "heading": "Follow Us",
+        "handle": "@tcpclothing"
+      },
+      "blocks": {
+        "ig_1": { "type": "image", "settings": {} },
+        "ig_2": { "type": "image", "settings": {} },
+        "ig_3": { "type": "image", "settings": {} },
+        "ig_4": { "type": "image", "settings": {} },
+        "ig_5": { "type": "image", "settings": {} }
+      },
+      "block_order": ["ig_1", "ig_2", "ig_3", "ig_4", "ig_5"]
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "subtitle": "NEWSLETTER",
+        "title": "JOIN THE TCP CLUB",
+        "description": "Get 10% Off Your First Order"
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "collections_grid",
+    "trending",
+    "lookbook",
+    "trust",
+    "instagram",
+    "newsletter"
+  ]
+}

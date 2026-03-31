@@ -1,0 +1,313 @@
+{%- comment -%} Announcement Bar {%- endcomment -%}
+<div class="announcement-bar full-width">
+  <div class="container">
+    <p>{{ section.settings.announcement_text }}</p>
+  </div>
+</div>
+
+{%- comment -%} Main Header {%- endcomment -%}
+<header class="header full-width">
+  <div class="container header__inner">
+    {%- comment -%} Mobile menu toggle {%- endcomment -%}
+    <button class="header__mobile-toggle" aria-label="Open menu" onclick="document.querySelector('.header__nav').classList.toggle('header__nav--open')">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </button>
+
+    {%- comment -%} Logo {%- endcomment -%}
+    <a href="{{ routes.root_url }}" class="header__logo">
+      <span class="header__logo-tcp">TCP</span>
+      <span class="header__logo-clothing">CLOTHING</span>
+    </a>
+
+    {%- comment -%} Navigation {%- endcomment -%}
+    <nav class="header__nav">
+      <button class="header__nav-close" aria-label="Close menu" onclick="this.parentElement.classList.remove('header__nav--open')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      {% for link in section.settings.menu.links %}
+        <a href="{{ link.url }}" class="header__nav-link{% if link.title == 'SALE' or link.title == 'Sale' %} header__nav-link--sale{% endif %}">
+          {{ link.title }}
+        </a>
+      {% endfor %}
+      {%- comment -%} Default nav links if no menu assigned {%- endcomment -%}
+      {% if section.settings.menu.links.size == 0 %}
+        <a href="/collections/new-in" class="header__nav-link">NEW IN</a>
+        <a href="/collections/swimwear" class="header__nav-link">SWIMWEAR</a>
+        <a href="/collections/linen" class="header__nav-link">LINEN</a>
+        <a href="/collections/festival" class="header__nav-link">FESTIVAL</a>
+        <a href="/collections/holiday" class="header__nav-link">HOLIDAY</a>
+        <a href="/collections/sale" class="header__nav-link header__nav-link--sale">SALE</a>
+      {% endif %}
+    </nav>
+
+    {%- comment -%} Right-side icons {%- endcomment -%}
+    <div class="header__actions">
+      {%- comment -%} Currency selector {%- endcomment -%}
+      <div class="header__currency">
+        <span>{{ section.settings.currency_label }}</span>
+      </div>
+
+      {%- comment -%} Search {%- endcomment -%}
+      <a href="{{ routes.search_url }}" class="header__icon" aria-label="Search">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+      </a>
+
+      {%- comment -%} Wishlist {%- endcomment -%}
+      <a href="/pages/wishlist" class="header__icon header__icon--wishlist" aria-label="Wishlist">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+        </svg>
+      </a>
+
+      {%- comment -%} Account {%- endcomment -%}
+      {% if shop.customer_accounts_enabled %}
+        <a href="{{ routes.account_url }}" class="header__icon" aria-label="Account">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+        </a>
+      {% endif %}
+
+      {%- comment -%} Cart {%- endcomment -%}
+      <a href="{{ routes.cart_url }}" class="header__icon header__icon--cart" aria-label="Cart">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
+        {% if cart.item_count > 0 %}
+          <span class="header__cart-count">{{ cart.item_count }}</span>
+        {% endif %}
+      </a>
+    </div>
+  </div>
+</header>
+
+{%- comment -%} Divider line {%- endcomment -%}
+<div class="header__divider full-width"></div>
+
+{% stylesheet %}
+  /* Announcement bar */
+  .announcement-bar {
+    background-color: #141414;
+    color: #FFFFFF;
+    padding: 8px 0;
+    text-align: center;
+    font-size: 0.6875rem;
+    font-weight: 400;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+
+  /* Header */
+  .header {
+    background-color: var(--color-background);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    gap: 32px;
+  }
+
+  .header__mobile-toggle {
+    display: none;
+    color: var(--color-foreground);
+  }
+
+  /* Logo */
+  .header__logo {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    text-decoration: none;
+    color: var(--color-foreground);
+    flex-shrink: 0;
+  }
+
+  .header__logo-tcp {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+  }
+
+  .header__logo-clothing {
+    font-size: 0.625rem;
+    font-weight: 400;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  /* Nav */
+  .header__nav {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    flex: 1;
+    justify-content: center;
+  }
+
+  .header__nav-close {
+    display: none;
+  }
+
+  .header__nav-link {
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    text-decoration: none;
+    color: var(--color-foreground);
+    transition: color 0.2s;
+    white-space: nowrap;
+  }
+
+  .header__nav-link:hover {
+    color: var(--color-accent);
+  }
+
+  .header__nav-link--sale {
+    color: var(--color-accent);
+  }
+
+  /* Actions */
+  .header__actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+  }
+
+  .header__currency {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    cursor: pointer;
+  }
+
+  .header__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-foreground);
+    transition: color 0.2s;
+    position: relative;
+  }
+
+  .header__icon:hover {
+    color: var(--color-accent);
+  }
+
+  .header__cart-count {
+    position: absolute;
+    top: -6px;
+    right: -8px;
+    background: var(--color-accent);
+    color: var(--color-white);
+    font-size: 0.5625rem;
+    font-weight: 600;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .header__divider {
+    height: 1px;
+    background-color: var(--color-light-gray);
+  }
+
+  /* Mobile */
+  @media (max-width: 960px) {
+    .header__mobile-toggle {
+      display: flex;
+    }
+
+    .header__nav {
+      position: fixed;
+      top: 0;
+      left: -100%;
+      width: 300px;
+      height: 100vh;
+      background: var(--color-white);
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      padding: 60px 32px 32px;
+      gap: 24px;
+      z-index: 200;
+      transition: left 0.3s ease;
+      box-shadow: 2px 0 20px rgba(0,0,0,0.1);
+    }
+
+    .header__nav--open {
+      left: 0;
+    }
+
+    .header__nav-close {
+      display: block;
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      color: var(--color-foreground);
+    }
+
+    .header__nav-link {
+      font-size: 0.875rem;
+    }
+
+    .header__currency {
+      display: none;
+    }
+
+    .header__icon--wishlist {
+      display: none;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "text",
+      "id": "announcement_text",
+      "label": "Announcement text",
+      "default": "FREE SHIPPING ON ALL EU ORDERS OVER \u00a350 \u00b7 EASY RETURNS"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Navigation menu"
+    },
+    {
+      "type": "text",
+      "id": "currency_label",
+      "label": "Currency label",
+      "default": "GBP \u25be"
+    },
+    {
+      "type": "link_list",
+      "id": "customer_account_menu",
+      "label": "Customer account menu",
+      "default": "customer-account-main-menu"
+    }
+  ]
+}
+{% endschema %}

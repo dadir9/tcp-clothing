@@ -1,0 +1,103 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "TCP Clothing",
+    "theme_version": "1.0.0",
+    "theme_author": "TCP Clothing",
+    "theme_documentation_url": "https://help.shopify.com/manual/online-store/themes",
+    "theme_support_url": "https://support.shopify.com/"
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "color",
+        "id": "background_color",
+        "default": "#FDF9F4",
+        "label": "Background"
+      },
+      {
+        "type": "color",
+        "id": "foreground_color",
+        "default": "#141414",
+        "label": "Foreground"
+      },
+      {
+        "type": "color",
+        "id": "accent_color",
+        "default": "#C2946B",
+        "label": "Accent"
+      },
+      {
+        "type": "color",
+        "id": "light_gray_color",
+        "default": "#F0ECEA",
+        "label": "Light Gray"
+      },
+      {
+        "type": "color",
+        "id": "medium_gray_color",
+        "default": "#8C8580",
+        "label": "Medium Gray"
+      },
+      {
+        "type": "color",
+        "id": "white_color",
+        "default": "#FFFFFF",
+        "label": "White"
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "font_picker",
+        "id": "type_primary_font",
+        "default": "work_sans_n4",
+        "label": "Primary font"
+      }
+    ]
+  },
+  {
+    "name": "Layout",
+    "settings": [
+      {
+        "type": "select",
+        "id": "max_page_width",
+        "label": "Page width",
+        "options": [
+          {
+            "value": "90rem",
+            "label": "Narrow"
+          },
+          {
+            "value": "110rem",
+            "label": "Wide"
+          }
+        ],
+        "default": "90rem"
+      },
+      {
+        "type": "range",
+        "id": "min_page_margin",
+        "min": 10,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "label": "Page margin",
+        "default": 20
+      },
+      {
+        "type": "range",
+        "id": "input_corner_radius",
+        "min": 0,
+        "max": 10,
+        "step": 1,
+        "unit": "px",
+        "label": "Input corner radius",
+        "default": 2
+      }
+    ]
+  }
+]

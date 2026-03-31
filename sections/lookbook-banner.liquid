@@ -1,0 +1,139 @@
+<section class="lookbook full-width" style="margin-top: var(--section-spacing);">
+  <div class="lookbook__wrapper">
+    <div class="lookbook__image-wrapper">
+      {% if section.settings.image %}
+        {{ section.settings.image | image_url: width: 1920 | image_tag: class: 'lookbook__image', loading: 'lazy' }}
+      {% else %}
+        <div class="lookbook__placeholder"></div>
+      {% endif %}
+    </div>
+
+    <div class="lookbook__content">
+      <div class="lookbook__text">
+        {% if section.settings.subtitle != blank %}
+          <span class="lookbook__subtitle">{{ section.settings.subtitle }}</span>
+        {% endif %}
+        <h2 class="lookbook__title">{{ section.settings.title }}</h2>
+        {% if section.settings.cta_text != blank %}
+          <a href="{{ section.settings.cta_url }}" class="btn btn--white lookbook__cta">{{ section.settings.cta_text }}</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .lookbook__wrapper {
+    position: relative;
+    min-height: 480px;
+    overflow: hidden;
+  }
+
+  .lookbook__image-wrapper {
+    position: absolute;
+    inset: 0;
+  }
+
+  .lookbook__image-wrapper img,
+  .lookbook__placeholder {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .lookbook__placeholder {
+    background: linear-gradient(135deg, #8C8580 0%, #141414 100%);
+  }
+
+  .lookbook__content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    min-height: 480px;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0.3) 50%, transparent 100%);
+  }
+
+  .lookbook__text {
+    padding: 64px 80px;
+    max-width: 500px;
+  }
+
+  .lookbook__subtitle {
+    display: block;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--color-accent);
+    margin-bottom: 16px;
+  }
+
+  .lookbook__title {
+    font-size: 2.25rem;
+    font-weight: 300;
+    color: #FFFFFF;
+    margin-bottom: 32px;
+    line-height: 1.2;
+  }
+
+  @media (max-width: 768px) {
+    .lookbook__wrapper {
+      min-height: 360px;
+    }
+
+    .lookbook__content {
+      min-height: 360px;
+      background: linear-gradient(to right, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.4) 100%);
+    }
+
+    .lookbook__text {
+      padding: 32px 20px;
+    }
+
+    .lookbook__title {
+      font-size: 1.5rem;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Lookbook Banner",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Background image"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "EDITORIAL"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Summer Lookbook 2025"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Button text",
+      "default": "VIEW LOOKBOOK"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "Button link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Lookbook Banner"
+    }
+  ]
+}
+{% endschema %}

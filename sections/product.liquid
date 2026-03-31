@@ -1,0 +1,710 @@
+{%- assign current_variant = product.selected_or_first_available_variant -%}
+
+<div class="product-page">
+  {%- comment -%} Image Gallery {%- endcomment -%}
+  <div class="product-gallery">
+    <div class="product-gallery__thumbnails">
+      {% for image in product.images %}
+        <button class="product-gallery__thumb{% if forloop.first %} product-gallery__thumb--active{% endif %}"
+                onclick="document.querySelector('.product-gallery__main-img.active').classList.remove('active'); document.getElementById('product-img-{{ forloop.index }}').classList.add('active'); document.querySelectorAll('.product-gallery__thumb--active').forEach(el => el.classList.remove('product-gallery__thumb--active')); this.classList.add('product-gallery__thumb--active');"
+                aria-label="View image {{ forloop.index }}">
+          {{ image | image_url: width: 100 | image_tag: loading: 'lazy' }}
+        </button>
+      {% endfor %}
+    </div>
+    <div class="product-gallery__main">
+      {% for image in product.images %}
+        <div id="product-img-{{ forloop.index }}" class="product-gallery__main-img{% if forloop.first %} active{% endif %}">
+          {{ image | image_url: width: 900 | image_tag: loading: forloop.first | ternary: 'eager', 'lazy' }}
+        </div>
+      {% endfor %}
+      {% if product.images.size == 0 %}
+        <div class="product-gallery__placeholder">
+          <div style="background: var(--color-light-gray); width: 100%; aspect-ratio: 3/4; border-radius: 2px;"></div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  {%- comment -%} Product Info {%- endcomment -%}
+  <div class="product-info">
+    {%- comment -%} Collection label {%- endcomment -%}
+    {% if product.collections.size > 0 %}
+      <a href="{{ product.collections.first.url }}" class="product-info__collection">{{ product.collections.first.title }}</a>
+    {% endif %}
+
+    <h1 class="product-info__title">{{ product.title }}</h1>
+
+    {%- comment -%} Rating stars (placeholder) {%- endcomment -%}
+    <div class="product-info__rating">
+      <div class="product-info__stars">
+        {% for i in (1..5) %}
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="{% if i <= 4 %}#141414{% else %}none{% endif %}" stroke="#141414" stroke-width="1.5">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+          </svg>
+        {% endfor %}
+      </div>
+      <span class="product-info__review-count">({{ section.settings.review_count | default: 24 }} reviews)</span>
+    </div>
+
+    {%- comment -%} Price {%- endcomment -%}
+    <div class="product-info__price">
+      {% if product.compare_at_price > product.price %}
+        <span class="product-info__price-compare">{{ product.compare_at_price | money }}</span>
+        <span class="product-info__price-current product-info__price-current--sale">{{ product.price | money }}</span>
+      {% else %}
+        <span class="product-info__price-current">{{ product.price | money }}</span>
+      {% endif %}
+    </div>
+
+    {%- comment -%} Product Form {%- endcomment -%}
+    {% form 'product', product, class: 'product-form' %}
+      {%- comment -%} Variant options {%- endcomment -%}
+      {% for option in product.options_with_values %}
+        <div class="product-form__option">
+          <label class="product-form__option-label">{{ option.name }}</label>
+
+          {% if option.name == 'Color' or option.name == 'Colour' %}
+            <div class="product-form__swatches">
+              {% for value in option.values %}
+                <label class="product-form__swatch">
+                  <input type="radio" name="option-{{ option.name }}" value="{{ value }}"
+                    {% if option.selected_value == value %}checked{% endif %}
+                    onchange="this.form.querySelector('[name=id]').value = this.closest('form').querySelector('option[value*=&quot;{{ value }}&quot;]')?.value || this.closest('form').querySelector('[name=id] option:first-child').value">
+                  <span class="product-form__swatch-color" style="background-color: {{ value | handleize }};" title="{{ value }}"></span>
+                </label>
+              {% endfor %}
+            </div>
+          {% else %}
+            <div class="product-form__sizes">
+              {% for value in option.values %}
+                <label class="product-form__size">
+                  <input type="radio" name="option-{{ option.name }}" value="{{ value }}"
+                    {% if option.selected_value == value %}checked{% endif %}>
+                  <span class="product-form__size-btn">{{ value }}</span>
+                </label>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+      {% endfor %}
+
+      {%- comment -%} Quantity {%- endcomment -%}
+      <div class="product-form__quantity">
+        <label class="product-form__option-label">Quantity</label>
+        <div class="product-form__quantity-selector">
+          <button type="button" class="product-form__qty-btn" onclick="let i=this.parentElement.querySelector('input'); i.value=Math.max(1,parseInt(i.value)-1);">-</button>
+          <input type="number" name="quantity" min="1" value="1" class="product-form__qty-input">
+          <button type="button" class="product-form__qty-btn" onclick="let i=this.parentElement.querySelector('input'); i.value=parseInt(i.value)+1;">+</button>
+        </div>
+      </div>
+
+      <select name="id" class="visually-hidden">
+        {% for variant in product.variants %}
+          <option value="{{ variant.id }}" {% if variant == current_variant %}selected{% endif %}>
+            {{ variant.title }} - {{ variant.price | money }}
+          </option>
+        {% endfor %}
+      </select>
+
+      {%- comment -%} Add to bag {%- endcomment -%}
+      <button type="submit" class="btn btn--primary product-form__add-to-bag" {% unless current_variant.available %}disabled{% endunless %}>
+        {% if current_variant.available %}
+          ADD TO BAG
+        {% else %}
+          SOLD OUT
+        {% endif %}
+      </button>
+
+      {%- comment -%} Buy it now {%- endcomment -%}
+      {{ form | payment_button }}
+
+      {%- comment -%} Payment icons {%- endcomment -%}
+      <div class="product-form__payment-icons">
+        {% for type in shop.enabled_payment_types %}
+          {{ type | payment_type_svg_tag }}
+        {% endfor %}
+      </div>
+    {% endform %}
+
+    {%- comment -%} Accordion details {%- endcomment -%}
+    <div class="product-accordions">
+      <details class="product-accordion">
+        <summary class="product-accordion__title">
+          <span>Description</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <div class="product-accordion__content">
+          {{ product.description }}
+        </div>
+      </details>
+
+      <details class="product-accordion">
+        <summary class="product-accordion__title">
+          <span>Size & Fit</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <div class="product-accordion__content">
+          <p>{{ section.settings.size_fit_text | default: 'Model is 6ft / 183cm and wears size M. Regular fit. True to size.' }}</p>
+        </div>
+      </details>
+
+      <details class="product-accordion">
+        <summary class="product-accordion__title">
+          <span>Shipping & Returns</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <div class="product-accordion__content">
+          <p>{{ section.settings.shipping_text | default: 'Free shipping on EU orders over &pound;50. 30-day hassle-free returns.' }}</p>
+        </div>
+      </details>
+
+      <details class="product-accordion">
+        <summary class="product-accordion__title">
+          <span>Materials & Care</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <div class="product-accordion__content">
+          <p>{{ section.settings.materials_text | default: 'Machine wash cold. Do not bleach. Tumble dry low. Iron on low heat.' }}</p>
+        </div>
+      </details>
+    </div>
+  </div>
+</div>
+
+{%- comment -%} Related Products {%- endcomment -%}
+<div class="related-products" style="padding: var(--section-spacing) 0;">
+  <h2 class="related-products__title">You May Also Like</h2>
+  <div class="related-products__grid">
+    {% for product in product.collections.first.products limit: 4 %}
+      {% if product.handle != product.handle %}
+        <div class="product-card">
+          <div class="product-card__image-wrapper">
+            {% if product.featured_image %}
+              <a href="{{ product.url }}">
+                {{ product.featured_image | image_url: width: 600 | image_tag: loading: 'lazy' }}
+              </a>
+            {% endif %}
+            <button class="product-card__wishlist" aria-label="Add to wishlist">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+              </svg>
+            </button>
+          </div>
+          <div class="product-card__info">
+            <h3 class="product-card__title"><a href="{{ product.url }}">{{ product.title }}</a></h3>
+            <div class="product-card__price">{{ product.price | money }}</div>
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
+
+{%- comment -%} Reviews Section {%- endcomment -%}
+<div class="reviews-section" style="padding: 0 0 var(--section-spacing);">
+  <h2 class="reviews-section__title">Customer Reviews</h2>
+  <div class="reviews-section__grid">
+    {% for block in section.blocks %}
+      <div class="review-card" {{ block.shopify_attributes }}>
+        <div class="review-card__stars">
+          {% assign stars = block.settings.stars | default: 5 %}
+          {% for i in (1..5) %}
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="{% if i <= stars %}#141414{% else %}none{% endif %}" stroke="#141414" stroke-width="1.5">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+            </svg>
+          {% endfor %}
+        </div>
+        <p class="review-card__text">"{{ block.settings.text }}"</p>
+        <div class="review-card__author">
+          <span class="review-card__name">{{ block.settings.author }}</span>
+          <span class="review-card__location">{{ block.settings.location }}</span>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% stylesheet %}
+  /* Product Page Layout */
+  .product-page {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    padding: var(--section-spacing) 0;
+  }
+
+  /* Gallery */
+  .product-gallery {
+    display: flex;
+    gap: 12px;
+  }
+
+  .product-gallery__thumbnails {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 72px;
+    flex-shrink: 0;
+  }
+
+  .product-gallery__thumb {
+    width: 72px;
+    height: 90px;
+    border: 2px solid transparent;
+    border-radius: 2px;
+    overflow: hidden;
+    cursor: pointer;
+    padding: 0;
+    background: none;
+  }
+
+  .product-gallery__thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .product-gallery__thumb--active {
+    border-color: var(--color-foreground);
+  }
+
+  .product-gallery__main {
+    flex: 1;
+    position: relative;
+  }
+
+  .product-gallery__main-img {
+    display: none;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .product-gallery__main-img.active {
+    display: block;
+  }
+
+  .product-gallery__main-img img {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    border-radius: 2px;
+  }
+
+  /* Product Info */
+  .product-info {
+    padding-top: 8px;
+  }
+
+  .product-info__collection {
+    font-size: 0.6875rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--color-accent);
+    text-decoration: none;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .product-info__title {
+    font-size: 1.75rem;
+    font-weight: 300;
+    margin-bottom: 12px;
+  }
+
+  .product-info__rating {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .product-info__stars {
+    display: flex;
+    gap: 2px;
+  }
+
+  .product-info__review-count {
+    font-size: 0.8125rem;
+    color: var(--color-medium-gray);
+  }
+
+  .product-info__price {
+    font-size: 1.25rem;
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .product-info__price-compare {
+    text-decoration: line-through;
+    color: var(--color-medium-gray);
+    font-size: 1rem;
+  }
+
+  .product-info__price-current--sale {
+    color: var(--color-accent);
+    font-weight: 500;
+  }
+
+  /* Form */
+  .product-form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .product-form__option-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 12px;
+  }
+
+  .product-form__swatches {
+    display: flex;
+    gap: 8px;
+  }
+
+  .product-form__swatch input {
+    display: none;
+  }
+
+  .product-form__swatch-color {
+    display: block;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+
+  .product-form__swatch input:checked + .product-form__swatch-color {
+    border-color: var(--color-foreground);
+    outline: 2px solid var(--color-foreground);
+    outline-offset: 2px;
+  }
+
+  .product-form__sizes {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .product-form__size input {
+    display: none;
+  }
+
+  .product-form__size-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 48px;
+    height: 40px;
+    padding: 0 16px;
+    font-size: 0.8125rem;
+    border: 1px solid var(--color-light-gray);
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .product-form__size input:checked + .product-form__size-btn {
+    background: var(--color-foreground);
+    color: var(--color-white);
+    border-color: var(--color-foreground);
+  }
+
+  .product-form__size-btn:hover {
+    border-color: var(--color-foreground);
+  }
+
+  /* Quantity */
+  .product-form__quantity-selector {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid var(--color-light-gray);
+    border-radius: 2px;
+  }
+
+  .product-form__qty-btn {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    color: var(--color-foreground);
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  .product-form__qty-input {
+    width: 48px;
+    height: 40px;
+    text-align: center;
+    border: none;
+    border-left: 1px solid var(--color-light-gray);
+    border-right: 1px solid var(--color-light-gray);
+    font-size: 0.875rem;
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+
+  .product-form__qty-input::-webkit-inner-spin-button,
+  .product-form__qty-input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+  }
+
+  /* Add to bag */
+  .product-form__add-to-bag {
+    width: 100%;
+    padding: 16px;
+    font-size: 0.8125rem;
+  }
+
+  .product-form__add-to-bag:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  /* Payment button overrides */
+  .product-form .shopify-payment-button {
+    margin-top: -8px;
+  }
+
+  .product-form .shopify-payment-button__button {
+    border-radius: 2px !important;
+    min-height: 48px;
+  }
+
+  /* Payment icons */
+  .product-form__payment-icons {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .product-form__payment-icons svg {
+    width: 38px;
+    height: 24px;
+  }
+
+  /* Accordions */
+  .product-accordions {
+    margin-top: 32px;
+    border-top: 1px solid var(--color-light-gray);
+  }
+
+  .product-accordion {
+    border-bottom: 1px solid var(--color-light-gray);
+  }
+
+  .product-accordion__title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 0;
+    cursor: pointer;
+    list-style: none;
+    font-size: 0.8125rem;
+    font-weight: 500;
+  }
+
+  .product-accordion__title::-webkit-details-marker {
+    display: none;
+  }
+
+  .product-accordion__title svg {
+    transition: transform 0.2s;
+  }
+
+  .product-accordion[open] .product-accordion__title svg {
+    transform: rotate(180deg);
+  }
+
+  .product-accordion__content {
+    padding: 0 0 18px;
+    font-size: 0.8125rem;
+    color: var(--color-medium-gray);
+    line-height: 1.7;
+  }
+
+  /* Related products */
+  .related-products__title {
+    text-align: center;
+    font-weight: 300;
+    margin-bottom: 40px;
+  }
+
+  .related-products__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+
+  /* Reviews */
+  .reviews-section__title {
+    text-align: center;
+    font-weight: 300;
+    margin-bottom: 40px;
+  }
+
+  .reviews-section__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .review-card {
+    background: var(--color-light-gray);
+    border-radius: 2px;
+    padding: 28px;
+  }
+
+  .review-card__stars {
+    display: flex;
+    gap: 2px;
+    margin-bottom: 16px;
+  }
+
+  .review-card__text {
+    font-size: 0.875rem;
+    line-height: 1.7;
+    color: var(--color-foreground);
+    margin-bottom: 20px;
+    font-style: italic;
+  }
+
+  .review-card__author {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .review-card__name {
+    font-size: 0.8125rem;
+    font-weight: 600;
+  }
+
+  .review-card__location {
+    font-size: 0.75rem;
+    color: var(--color-medium-gray);
+  }
+
+  /* Responsive */
+  @media (max-width: 960px) {
+    .product-page {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+
+    .product-gallery {
+      flex-direction: column-reverse;
+    }
+
+    .product-gallery__thumbnails {
+      flex-direction: row;
+      width: auto;
+    }
+
+    .product-gallery__thumb {
+      width: 56px;
+      height: 70px;
+    }
+
+    .related-products__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .reviews-section__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .related-products__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Product",
+  "settings": [
+    {
+      "type": "text",
+      "id": "review_count",
+      "label": "Review count",
+      "default": "24"
+    },
+    {
+      "type": "text",
+      "id": "size_fit_text",
+      "label": "Size & fit text",
+      "default": "Model is 6ft / 183cm and wears size M. Regular fit. True to size."
+    },
+    {
+      "type": "text",
+      "id": "shipping_text",
+      "label": "Shipping & returns text",
+      "default": "Free shipping on EU orders over \u00a350. 30-day hassle-free returns."
+    },
+    {
+      "type": "text",
+      "id": "materials_text",
+      "label": "Materials & care text",
+      "default": "Machine wash cold. Do not bleach. Tumble dry low. Iron on low heat."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        {
+          "type": "range",
+          "id": "stars",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "label": "Stars",
+          "default": 5
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Review text"
+        },
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Author name"
+        },
+        {
+          "type": "text",
+          "id": "location",
+          "label": "Location"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product"
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  }
+}
+{% endschema %}

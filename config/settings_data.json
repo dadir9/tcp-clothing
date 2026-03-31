@@ -1,0 +1,13 @@
+{
+  "current": {
+    "background_color": "#FDF9F4",
+    "foreground_color": "#141414",
+    "accent_color": "#C2946B",
+    "light_gray_color": "#F0ECEA",
+    "medium_gray_color": "#8C8580",
+    "white_color": "#FFFFFF",
+    "max_page_width": "90rem",
+    "min_page_margin": 20,
+    "input_corner_radius": 2
+  }
+}
