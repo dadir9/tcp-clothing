@@ -1,0 +1,95 @@
+<section class="auth-page">
+  <div class="container">
+    <div class="auth-page__card">
+      <div class="auth-page__icon">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#141414" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+      </div>
+
+      <h1 class="auth-page__title">Create Your Account</h1>
+      <p class="auth-page__subtitle">Join TCP Clothing for exclusive access</p>
+
+      {% form 'create_customer', class: 'auth-page__form' %}
+        {% if form.errors %}
+          <div class="auth-page__error">
+            <p>{{ form.errors | default_errors }}</p>
+          </div>
+        {% endif %}
+
+        <div class="auth-page__field-row">
+          <div class="auth-page__field">
+            <label for="first-name" class="auth-page__label">First name</label>
+            <input type="text" id="first-name" name="customer[first_name]" class="auth-page__input" autocomplete="given-name" required>
+          </div>
+          <div class="auth-page__field">
+            <label for="last-name" class="auth-page__label">Last name</label>
+            <input type="text" id="last-name" name="customer[last_name]" class="auth-page__input" autocomplete="family-name" required>
+          </div>
+        </div>
+
+        <div class="auth-page__field">
+          <label for="reg-email" class="auth-page__label">Email address</label>
+          <input type="email" id="reg-email" name="customer[email]" class="auth-page__input" placeholder="you@example.com" autocomplete="email" required>
+        </div>
+
+        <div class="auth-page__field">
+          <label for="reg-password" class="auth-page__label">Password</label>
+          <input type="password" id="reg-password" name="customer[password]" class="auth-page__input" placeholder="At least 8 characters" autocomplete="new-password" required>
+        </div>
+
+        <div class="auth-page__consent">
+          <label class="auth-page__checkbox-label">
+            <input type="checkbox" class="auth-page__checkbox" required>
+            <span>I agree to the <a href="/policies/terms-of-service" class="auth-page__link">Terms of Service</a> and <a href="/policies/privacy-policy" class="auth-page__link">Privacy Policy</a></span>
+          </label>
+          <label class="auth-page__checkbox-label">
+            <input type="checkbox" name="customer[accepts_marketing]" class="auth-page__checkbox">
+            <span>Send me updates about new collections and offers</span>
+          </label>
+        </div>
+
+        <button type="submit" class="btn btn--primary auth-page__submit">CREATE ACCOUNT</button>
+      {% endform %}
+
+      <div class="auth-page__divider">
+        <span>or</span>
+      </div>
+
+      <p class="auth-page__switch">
+        Already have an account? <a href="{{ routes.account_login_url }}" class="auth-page__link--accent">Sign in</a>
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .auth-page__field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .auth-page__consent {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .auth-page__consent .auth-page__checkbox-label span {
+    font-size: 0.75rem;
+    line-height: 1.4;
+  }
+
+  .auth-page__consent a {
+    color: var(--color-accent);
+    text-decoration: underline;
+  }
+
+  @media (max-width: 480px) {
+    .auth-page__field-row {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

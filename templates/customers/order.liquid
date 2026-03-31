@@ -1,0 +1,52 @@
+<section class="account-page">
+  <div class="container">
+    <a href="{{ routes.account_url }}" class="account-page__back">← Back to Account</a>
+    <h1 class="account-page__title" style="text-align:left;margin:16px 0 32px;">{{ order.name }}</h1>
+    <p style="color:var(--color-medium-gray);margin-bottom:32px;">Placed on {{ order.created_at | date: "%B %d, %Y" }}</p>
+
+    <div class="account-page__grid">
+      <div class="account-page__section">
+        <h2>Items</h2>
+        {% for line_item in order.line_items %}
+          <div style="display:flex;gap:16px;padding:16px 0;border-bottom:1px solid var(--color-light-gray);">
+            {% if line_item.image %}
+              <div style="width:80px;height:100px;background:var(--color-light-gray);border-radius:2px;overflow:hidden;flex-shrink:0;">
+                {{ line_item.image | image_url: width: 160 | image_tag }}
+              </div>
+            {% endif %}
+            <div style="flex:1;">
+              <p style="font-weight:500;">{{ line_item.title }}</p>
+              {% if line_item.variant.title != 'Default Title' %}
+                <p style="font-size:0.8125rem;color:var(--color-medium-gray);">{{ line_item.variant.title }}</p>
+              {% endif %}
+              <p style="font-size:0.8125rem;color:var(--color-medium-gray);">Qty: {{ line_item.quantity }}</p>
+            </div>
+            <p style="font-weight:500;">{{ line_item.final_line_price | money }}</p>
+          </div>
+        {% endfor %}
+
+        <div style="padding:20px 0;text-align:right;">
+          <p style="margin-bottom:8px;"><span style="color:var(--color-medium-gray);">Subtotal:</span> {{ order.subtotal_price | money }}</p>
+          {% for shipping_method in order.shipping_methods %}
+            <p style="margin-bottom:8px;"><span style="color:var(--color-medium-gray);">Shipping ({{ shipping_method.title }}):</span> {{ shipping_method.price | money }}</p>
+          {% endfor %}
+          <p style="font-size:1.125rem;font-weight:600;margin-top:12px;padding-top:12px;border-top:1px solid var(--color-light-gray);">Total: {{ order.total_price | money }}</p>
+        </div>
+      </div>
+
+      <div class="account-page__section">
+        <h2>Shipping Address</h2>
+        <div class="account-page__details">
+          {{ order.shipping_address | format_address }}
+        </div>
+        <h2 style="margin-top:32px;">Status</h2>
+        <p><strong>Payment:</strong> {{ order.financial_status_label }}</p>
+        <p><strong>Fulfillment:</strong> {{ order.fulfillment_status_label }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .account-page__back { font-size: 0.8125rem; color: var(--color-accent); font-weight: 500; }
+</style>

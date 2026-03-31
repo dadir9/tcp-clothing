@@ -1,0 +1,268 @@
+<section class="auth-page">
+  <div class="container">
+    <div class="auth-page__card">
+      <div class="auth-page__icon">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#141414" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+      </div>
+
+      <h1 class="auth-page__title">Welcome Back</h1>
+      <p class="auth-page__subtitle">Sign in to your TCP Clothing account</p>
+
+      {% form 'customer_login', class: 'auth-page__form' %}
+        {% if form.errors %}
+          <div class="auth-page__error">
+            <p>{{ form.errors | default_errors }}</p>
+          </div>
+        {% endif %}
+
+        <div class="auth-page__field">
+          <label for="customer-email" class="auth-page__label">Email address</label>
+          <input
+            type="email"
+            id="customer-email"
+            name="customer[email]"
+            class="auth-page__input"
+            placeholder="you@example.com"
+            autocomplete="email"
+            required
+          >
+        </div>
+
+        <div class="auth-page__field">
+          <label for="customer-password" class="auth-page__label">Password</label>
+          <input
+            type="password"
+            id="customer-password"
+            name="customer[password]"
+            class="auth-page__input"
+            placeholder="••••••••"
+            autocomplete="current-password"
+            required
+          >
+        </div>
+
+        <div class="auth-page__row">
+          <label class="auth-page__checkbox-label">
+            <input type="checkbox" name="remember" class="auth-page__checkbox">
+            <span>Remember me</span>
+          </label>
+          <a href="#recover" class="auth-page__link" onclick="document.getElementById('recover-form').style.display='block';document.getElementById('login-form-main').style.display='none';return false;">Forgot password?</a>
+        </div>
+
+        <button type="submit" class="btn btn--primary auth-page__submit">SIGN IN</button>
+      {% endform %}
+
+      <div class="auth-page__divider">
+        <span>or</span>
+      </div>
+
+      <p class="auth-page__switch">
+        Don't have an account? <a href="{{ routes.account_register_url }}" class="auth-page__link--accent">Create one</a>
+      </p>
+    </div>
+
+    {%- comment -%} Password recovery form {%- endcomment -%}
+    <div class="auth-page__card" id="recover-form" style="display:none;">
+      <h2 class="auth-page__title" style="font-size:1.5rem;">Reset Password</h2>
+      <p class="auth-page__subtitle">We'll send you an email to reset your password.</p>
+
+      {% form 'recover_customer_password', class: 'auth-page__form' %}
+        <div class="auth-page__field">
+          <label for="recover-email" class="auth-page__label">Email address</label>
+          <input
+            type="email"
+            id="recover-email"
+            name="email"
+            class="auth-page__input"
+            placeholder="you@example.com"
+            autocomplete="email"
+            required
+          >
+        </div>
+
+        <button type="submit" class="btn btn--primary auth-page__submit">SEND RESET LINK</button>
+      {% endform %}
+
+      <p class="auth-page__switch" style="margin-top:24px;">
+        <a href="#" class="auth-page__link--accent" onclick="document.getElementById('recover-form').style.display='none';document.getElementById('login-form-main').style.display='block';return false;">← Back to login</a>
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .auth-page {
+    padding: 60px 0 80px;
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+  }
+
+  .auth-page .container {
+    max-width: 460px;
+    margin: 0 auto;
+  }
+
+  .auth-page__card {
+    background: var(--color-white);
+    padding: 48px 40px;
+    border-radius: 8px;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+  }
+
+  .auth-page__icon {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+  .auth-page__icon svg {
+    margin: 0 auto;
+  }
+
+  .auth-page__title {
+    text-align: center;
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .auth-page__subtitle {
+    text-align: center;
+    font-size: 0.875rem;
+    color: var(--color-medium-gray);
+    margin-bottom: 32px;
+  }
+
+  .auth-page__form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .auth-page__field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .auth-page__label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--color-medium-gray);
+  }
+
+  .auth-page__input {
+    padding: 14px 16px;
+    border: 1px solid var(--color-light-gray);
+    border-radius: 6px;
+    font-size: 0.875rem;
+    background: var(--color-background);
+    color: var(--color-foreground);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .auth-page__input:focus {
+    border-color: var(--color-accent);
+  }
+
+  .auth-page__input::placeholder {
+    color: #b5b0ab;
+  }
+
+  .auth-page__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .auth-page__checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.8125rem;
+    cursor: pointer;
+  }
+
+  .auth-page__checkbox {
+    width: 16px;
+    height: 16px;
+    border-radius: 3px;
+    accent-color: var(--color-accent);
+  }
+
+  .auth-page__link {
+    font-size: 0.8125rem;
+    color: var(--color-accent);
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .auth-page__link:hover {
+    text-decoration: underline;
+  }
+
+  .auth-page__submit {
+    width: 100%;
+    margin-top: 8px;
+    padding: 16px;
+  }
+
+  .auth-page__divider {
+    text-align: center;
+    margin: 28px 0;
+    position: relative;
+  }
+
+  .auth-page__divider::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 1px;
+    background: var(--color-light-gray);
+  }
+
+  .auth-page__divider span {
+    position: relative;
+    background: var(--color-white);
+    padding: 0 16px;
+    font-size: 0.8125rem;
+    color: var(--color-medium-gray);
+  }
+
+  .auth-page__switch {
+    text-align: center;
+    font-size: 0.8125rem;
+    color: var(--color-medium-gray);
+  }
+
+  .auth-page__link--accent {
+    color: var(--color-accent);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .auth-page__link--accent:hover {
+    text-decoration: underline;
+  }
+
+  .auth-page__error {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 6px;
+    padding: 12px 16px;
+    font-size: 0.8125rem;
+    color: #dc2626;
+  }
+
+  @media (max-width: 768px) {
+    .auth-page__card {
+      padding: 32px 24px;
+    }
+  }
+</style>

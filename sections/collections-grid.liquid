@@ -16,6 +16,7 @@
           </div>
           <div class="collections-grid__overlay">
             <span class="collections-grid__name">{{ block.settings.title }}</span>
+            <span class="collections-grid__arrow">→</span>
           </div>
         </a>
       {% endfor %}
@@ -43,6 +44,13 @@
     overflow: hidden;
     text-decoration: none;
     aspect-ratio: 3 / 4;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .collections-grid__card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.12);
   }
 
   .collections-grid__image-wrapper {
@@ -75,12 +83,31 @@
     background: linear-gradient(transparent, rgba(0, 0, 0, 0.6));
   }
 
+  .collections-grid__overlay {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
   .collections-grid__name {
     color: #FFFFFF;
     font-size: 0.8125rem;
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 2px;
+  }
+
+  .collections-grid__arrow {
+    color: #FFFFFF;
+    font-size: 1.25rem;
+    opacity: 0;
+    transform: translateX(-8px);
+    transition: all 0.3s ease;
+  }
+
+  .collections-grid__card:hover .collections-grid__arrow {
+    opacity: 1;
+    transform: translateX(0);
   }
 
   @media (max-width: 768px) {
@@ -103,7 +130,7 @@
       "type": "text",
       "id": "heading",
       "label": "Heading",
-      "default": ""
+      "default": "Shop By Category"
     }
   ],
   "blocks": [

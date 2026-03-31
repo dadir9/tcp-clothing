@@ -4,8 +4,7 @@
       {%- comment -%} Logo & tagline {%- endcomment -%}
       <div class="footer__brand">
         <a href="{{ routes.root_url }}" class="footer__logo">
-          <span class="footer__logo-tcp">TCP</span>
-          <span class="footer__logo-clothing">CLOTHING</span>
+          <img src="{{ 'logo.svg' | asset_url }}" alt="{{ shop.name }}" class="footer__logo-img" width="48" height="48" style="filter: brightness(0) invert(1);">
         </a>
         <p class="footer__tagline">{{ section.settings.tagline }}</p>
       </div>

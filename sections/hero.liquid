@@ -13,9 +13,14 @@
         <span class="hero__subtitle">{{ section.settings.subtitle }}</span>
       {% endif %}
       <h1 class="hero__title">{{ section.settings.title }}</h1>
-      {% if section.settings.cta_text != blank %}
-        <a href="{{ section.settings.cta_url }}" class="btn btn--primary hero__cta">{{ section.settings.cta_text }}</a>
-      {% endif %}
+      <div class="hero__actions">
+        {% if section.settings.cta_text != blank %}
+          <a href="{{ section.settings.cta_url }}" class="btn btn--primary hero__cta">{{ section.settings.cta_text }}</a>
+        {% endif %}
+        {% if section.settings.secondary_text != blank %}
+          <a href="{{ section.settings.secondary_url }}" class="hero__secondary-link">{{ section.settings.secondary_text }} →</a>
+        {% endif %}
+      </div>
     </div>
   </div>
 </section>
@@ -80,8 +85,30 @@
     color: var(--color-foreground);
   }
 
+  .hero__actions {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
   .hero__cta {
     display: inline-flex;
+  }
+
+  .hero__secondary-link {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--color-accent);
+    text-decoration: none;
+    transition: color 0.2s, gap 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .hero__secondary-link:hover {
+    color: #b5854e;
   }
 
   @media (max-width: 768px) {
@@ -138,6 +165,17 @@
       "type": "url",
       "id": "cta_url",
       "label": "Button link"
+    },
+    {
+      "type": "text",
+      "id": "secondary_text",
+      "label": "Secondary link text",
+      "default": "View Lookbook"
+    },
+    {
+      "type": "url",
+      "id": "secondary_url",
+      "label": "Secondary link URL"
     }
   ],
   "presets": [

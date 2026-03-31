@@ -1,37 +1,105 @@
-{% comment %}
-  This section is used in the cart template to render /cart page with an
-  overview of the items in customer's cart.
+<section class="cart-page">
+  <div class="container">
+    <div class="cart-page__header">
+      <span class="cart-page__label">YOUR BAG</span>
+      <div class="cart-page__accent-line"></div>
+      <h1 class="cart-page__title">Shopping Bag ({{ cart.item_count }})</h1>
+    </div>
 
-  https://shopify.dev/docs/storefronts/themes/architecture/templates/cart
-{% endcomment %}
+    {% if cart.item_count > 0 %}
+      <div class="cart-page__layout">
+        <div class="cart-page__items">
+          {% for item in cart.items %}
+            <div class="cart-page__item">
+              <a href="{{ item.url }}" class="cart-page__item-image">
+                {% if item.image %}
+                  {{ item.image | image_url: width: 200 | image_tag: loading: 'lazy' }}
+                {% endif %}
+              </a>
+              <div class="cart-page__item-details">
+                <a href="{{ item.url }}" class="cart-page__item-title">{{ item.product.title }}</a>
+                {% if item.variant.title != 'Default Title' %}
+                  <p class="cart-page__item-variant">{{ item.variant.title }}</p>
+                {% endif %}
+                <p class="cart-page__item-price">{{ item.final_line_price | money }}</p>
+                <div class="cart-page__item-qty">
+                  <a href="{{ routes.cart_change_url }}?id={{ item.variant.id }}&quantity={{ item.quantity | minus: 1 }}" class="cart-page__qty-btn">−</a>
+                  <span class="cart-page__qty-num">{{ item.quantity }}</span>
+                  <a href="{{ routes.cart_change_url }}?id={{ item.variant.id }}&quantity={{ item.quantity | plus: 1 }}" class="cart-page__qty-btn">+</a>
+                </div>
+              </div>
+              <a href="{{ routes.cart_change_url }}?id={{ item.variant.id }}&quantity=0" class="cart-page__item-remove">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </a>
+            </div>
+          {% endfor %}
+        </div>
 
-<h1>{{ 'cart.title' | t }}</h1>
+        <div class="cart-page__summary">
+          <h3>Order Summary</h3>
+          <div class="cart-page__summary-row"><span>Subtotal</span><span>{{ cart.total_price | money }}</span></div>
+          <div class="cart-page__summary-row"><span>Shipping</span><span>Calculated at checkout</span></div>
+          <div class="cart-page__summary-total"><span>Total</span><span>{{ cart.total_price | money }}</span></div>
+          <form action="{{ routes.cart_url }}" method="post">
+            <button type="submit" name="checkout" class="btn btn--primary cart-page__checkout">PROCEED TO CHECKOUT</button>
+          </form>
+          <a href="{{ routes.all_products_collection_url }}" class="cart-page__continue">Continue Shopping →</a>
+          <div class="cart-page__trust">
+            <p>🚚 Free shipping on orders over £50</p>
+            <p>🔄 30-day easy returns</p>
+            <p>🔒 Secure checkout</p>
+          </div>
+        </div>
+      </div>
+    {% else %}
+      <div class="cart-page__empty">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#8C8580" stroke-width="1.2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        <h3>Your bag is empty</h3>
+        <p>Looks like you haven't added anything yet.</p>
+        <a href="{{ routes.all_products_collection_url }}" class="btn btn--primary">START SHOPPING</a>
+      </div>
+    {% endif %}
+  </div>
+</section>
 
-<form action="{{ routes.cart_url }}" method="post">
-  <table>
-    {% for item in cart.items %}
-      <tr>
-        <td>
-          {% render 'image', image: item.image, url: item.url %}
-        </td>
-        <td>
-          <p>{{ item.product.title }}</p>
-          {{ 'cart.remove' | t | link_to: item.url_to_remove }}
-        </td>
-        <td>
-          <input type="text" name="updates[]" value="{{ item.quantity }}">
-          <input type="submit" value="{{ 'cart.update' | t }}">
-        </td>
-      </tr>
-    {% endfor %}
-  </table>
-
-  <input type="submit" name="checkout" value="{{ 'cart.checkout' | t }}">
-</form>
+{% stylesheet %}
+  .cart-page { padding: 60px 0 80px; }
+  .cart-page__header { text-align: center; margin-bottom: 48px; }
+  .cart-page__label { font-size: 0.6875rem; font-weight: 500; text-transform: uppercase; letter-spacing: 3px; color: var(--color-accent); }
+  .cart-page__accent-line { width: 30px; height: 2px; background: var(--color-accent); margin: 12px auto 16px; }
+  .cart-page__title { font-size: 2rem; font-weight: 300; }
+  .cart-page__layout { display: grid; grid-template-columns: 1fr 380px; gap: 48px; align-items: start; }
+  .cart-page__item { display: flex; gap: 20px; padding: 24px 0; border-bottom: 1px solid var(--color-light-gray); position: relative; }
+  .cart-page__item-image { width: 100px; height: 130px; border-radius: 2px; overflow: hidden; flex-shrink: 0; background: var(--color-light-gray); }
+  .cart-page__item-image img { width: 100%; height: 100%; object-fit: cover; }
+  .cart-page__item-details { flex: 1; }
+  .cart-page__item-title { font-weight: 500; font-size: 0.9375rem; display: block; margin-bottom: 4px; color: var(--color-foreground); }
+  .cart-page__item-variant { font-size: 0.8125rem; color: var(--color-medium-gray); margin-bottom: 8px; }
+  .cart-page__item-price { font-weight: 600; margin-bottom: 12px; }
+  .cart-page__item-qty { display: flex; align-items: center; }
+  .cart-page__qty-btn { width: 32px; height: 32px; border: 1px solid var(--color-light-gray); display: flex; align-items: center; justify-content: center; font-size: 1rem; cursor: pointer; transition: background 0.2s; color: var(--color-foreground); }
+  .cart-page__qty-btn:hover { background: var(--color-light-gray); }
+  .cart-page__qty-num { width: 40px; height: 32px; display: flex; align-items: center; justify-content: center; border-top: 1px solid var(--color-light-gray); border-bottom: 1px solid var(--color-light-gray); font-size: 0.875rem; }
+  .cart-page__item-remove { position: absolute; top: 24px; right: 0; color: var(--color-medium-gray); transition: color 0.2s; }
+  .cart-page__item-remove:hover { color: var(--color-foreground); }
+  .cart-page__summary { background: var(--color-white); padding: 32px; border-radius: 6px; box-shadow: 0 2px 16px rgba(0,0,0,0.05); position: sticky; top: 140px; }
+  .cart-page__summary h3 { font-size: 1.125rem; font-weight: 600; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--color-light-gray); }
+  .cart-page__summary-row { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 0.875rem; color: var(--color-medium-gray); }
+  .cart-page__summary-total { display: flex; justify-content: space-between; padding: 16px 0; border-top: 1px solid var(--color-light-gray); margin-top: 12px; font-weight: 600; font-size: 1.0625rem; }
+  .cart-page__checkout { width: 100%; margin-top: 16px; padding: 16px; }
+  .cart-page__continue { display: block; text-align: center; margin-top: 16px; font-size: 0.8125rem; color: var(--color-accent); font-weight: 500; }
+  .cart-page__trust { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--color-light-gray); }
+  .cart-page__trust p { font-size: 0.75rem; color: var(--color-medium-gray); margin-bottom: 6px; }
+  .cart-page__empty { text-align: center; padding: 60px 0; }
+  .cart-page__empty svg { margin: 0 auto 20px; }
+  .cart-page__empty h3 { font-size: 1.25rem; font-weight: 500; margin-bottom: 8px; }
+  .cart-page__empty p { color: var(--color-medium-gray); margin-bottom: 24px; }
+  @media (max-width: 768px) { .cart-page__layout { grid-template-columns: 1fr; } .cart-page__summary { position: static; } }
+{% endstylesheet %}
 
 {% schema %}
 {
-  "name": "t:general.cart",
+  "name": "Cart",
   "settings": []
 }
 {% endschema %}

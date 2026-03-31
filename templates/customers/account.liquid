@@ -1,0 +1,70 @@
+<section class="account-page">
+  <div class="container">
+    <div class="account-page__header">
+      <span class="account-page__label">MY ACCOUNT</span>
+      <div class="account-page__accent-line"></div>
+      <h1 class="account-page__title">Welcome, {{ customer.first_name }}</h1>
+      <a href="{{ routes.account_logout_url }}" class="account-page__logout">Sign out</a>
+    </div>
+
+    <div class="account-page__grid">
+      <div class="account-page__section">
+        <h2>Order History</h2>
+        {% if customer.orders.size > 0 %}
+          <div class="account-page__orders">
+            {% for order in customer.orders %}
+              <div class="account-page__order">
+                <div class="account-page__order-header">
+                  <a href="{{ order.customer_url }}">{{ order.name }}</a>
+                  <span class="account-page__order-date">{{ order.created_at | date: "%B %d, %Y" }}</span>
+                </div>
+                <div class="account-page__order-details">
+                  <span>{{ order.financial_status_label }}</span>
+                  <span>{{ order.fulfillment_status_label }}</span>
+                  <span class="account-page__order-total">{{ order.total_price | money }}</span>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p class="account-page__empty">You haven't placed any orders yet.</p>
+          <a href="{{ routes.all_products_collection_url }}" class="btn btn--primary">START SHOPPING</a>
+        {% endif %}
+      </div>
+
+      <div class="account-page__section">
+        <h2>Account Details</h2>
+        <div class="account-page__details">
+          <p><strong>{{ customer.name }}</strong></p>
+          <p>{{ customer.email }}</p>
+          {% if customer.default_address %}
+            <br>
+            <p>{{ customer.default_address.address1 }}</p>
+            <p>{{ customer.default_address.city }}, {{ customer.default_address.country }}</p>
+          {% endif %}
+        </div>
+        <a href="{{ routes.account_addresses_url }}" class="btn btn--secondary" style="margin-top:20px;">MANAGE ADDRESSES</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .account-page { padding: 60px 0 80px; }
+  .account-page__header { text-align: center; margin-bottom: 48px; }
+  .account-page__label { font-size: 0.6875rem; font-weight: 500; text-transform: uppercase; letter-spacing: 3px; color: var(--color-accent); }
+  .account-page__accent-line { width: 30px; height: 2px; background: var(--color-accent); margin: 12px auto 16px; }
+  .account-page__title { font-size: 2rem; font-weight: 300; margin-bottom: 12px; }
+  .account-page__logout { font-size: 0.8125rem; color: var(--color-accent); }
+  .account-page__grid { display: grid; grid-template-columns: 2fr 1fr; gap: 48px; }
+  .account-page__section h2 { font-size: 1.125rem; font-weight: 600; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--color-light-gray); }
+  .account-page__order { padding: 16px 0; border-bottom: 1px solid var(--color-light-gray); }
+  .account-page__order-header { display: flex; justify-content: space-between; margin-bottom: 8px; }
+  .account-page__order-header a { color: var(--color-accent); font-weight: 500; }
+  .account-page__order-date { font-size: 0.8125rem; color: var(--color-medium-gray); }
+  .account-page__order-details { display: flex; gap: 16px; font-size: 0.8125rem; color: var(--color-medium-gray); }
+  .account-page__order-total { margin-left: auto; font-weight: 600; color: var(--color-foreground); }
+  .account-page__empty { color: var(--color-medium-gray); margin-bottom: 20px; }
+  .account-page__details p { font-size: 0.875rem; line-height: 1.6; }
+  @media (max-width: 768px) { .account-page__grid { grid-template-columns: 1fr; gap: 32px; } }
+</style>

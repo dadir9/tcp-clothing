@@ -145,6 +145,13 @@ h3 { font-size: 1.25rem; font-weight: 400; line-height: 1.4; }
 
 .btn--primary:hover {
   background-color: #333;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.btn--primary:active {
+  transform: translateY(0);
+  box-shadow: none;
 }
 
 .btn--secondary {
@@ -156,6 +163,11 @@ h3 { font-size: 1.25rem; font-weight: 400; line-height: 1.4; }
 .btn--secondary:hover {
   background-color: var(--color-foreground);
   color: var(--color-white);
+  transform: translateY(-1px);
+}
+
+.btn--secondary:active {
+  transform: translateY(0);
 }
 
 .btn--accent {
@@ -164,7 +176,14 @@ h3 { font-size: 1.25rem; font-weight: 400; line-height: 1.4; }
 }
 
 .btn--accent:hover {
-  opacity: 0.9;
+  background-color: #b5854e;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(194,148,107,0.3);
+}
+
+.btn--accent:active {
+  transform: translateY(0);
+  box-shadow: none;
 }
 
 .btn--white {
@@ -174,6 +193,13 @@ h3 { font-size: 1.25rem; font-weight: 400; line-height: 1.4; }
 
 .btn--white:hover {
   background-color: var(--color-light-gray);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.btn--white:active {
+  transform: translateY(0);
+  box-shadow: none;
 }
 
 /* Visually hidden */

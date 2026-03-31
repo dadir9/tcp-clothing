@@ -19,8 +19,7 @@
 
     {%- comment -%} Logo {%- endcomment -%}
     <a href="{{ routes.root_url }}" class="header__logo">
-      <span class="header__logo-tcp">TCP</span>
-      <span class="header__logo-clothing">CLOTHING</span>
+      <img src="{{ 'logo.svg' | asset_url }}" alt="{{ shop.name }}" class="header__logo-img" width="48" height="48">
     </a>
 
     {%- comment -%} Navigation {%- endcomment -%}
@@ -46,10 +45,58 @@
 
     {%- comment -%} Right-side icons {%- endcomment -%}
     <div class="header__actions">
-      {%- comment -%} Currency selector {%- endcomment -%}
-      <div class="header__currency">
-        <span>{{ section.settings.currency_label }}</span>
+      {%- comment -%} Country/Currency selector {%- endcomment -%}
+      <div class="header__currency-wrapper">
+        <button class="header__currency-btn" onclick="this.parentElement.classList.toggle('header__currency-wrapper--open')">
+          <span class="header__currency-flag" id="active-flag">🇬🇧</span>
+          <span class="header__currency-code" id="active-currency">GBP</span>
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4l3 3 3-3"/></svg>
+        </button>
+        <div class="header__currency-dropdown">
+          <button class="header__currency-option header__currency-option--active" onclick="selectCountry(this, '🇬🇧', 'GBP', 'United Kingdom')">
+            <span>🇬🇧</span> United Kingdom <span class="header__currency-code-sm">GBP £</span>
+          </button>
+          <button class="header__currency-option" onclick="selectCountry(this, '🇫🇷', 'EUR', 'France')">
+            <span>🇫🇷</span> France <span class="header__currency-code-sm">EUR €</span>
+          </button>
+          <button class="header__currency-option" onclick="selectCountry(this, '🇳🇱', 'EUR', 'Netherlands')">
+            <span>🇳🇱</span> Netherlands <span class="header__currency-code-sm">EUR €</span>
+          </button>
+          <button class="header__currency-option" onclick="selectCountry(this, '🇩🇪', 'EUR', 'Germany')">
+            <span>🇩🇪</span> Germany <span class="header__currency-code-sm">EUR €</span>
+          </button>
+          <button class="header__currency-option" onclick="selectCountry(this, '🇧🇪', 'EUR', 'Belgium')">
+            <span>🇧🇪</span> Belgium <span class="header__currency-code-sm">EUR €</span>
+          </button>
+          <button class="header__currency-option" onclick="selectCountry(this, '🇪🇸', 'EUR', 'Spain')">
+            <span>🇪🇸</span> Spain <span class="header__currency-code-sm">EUR €</span>
+          </button>
+          <button class="header__currency-option" onclick="selectCountry(this, '🇮🇹', 'EUR', 'Italy')">
+            <span>🇮🇹</span> Italy <span class="header__currency-code-sm">EUR €</span>
+          </button>
+          <button class="header__currency-option" onclick="selectCountry(this, '🇸🇪', 'SEK', 'Sweden')">
+            <span>🇸🇪</span> Sweden <span class="header__currency-code-sm">SEK kr</span>
+          </button>
+          <button class="header__currency-option" onclick="selectCountry(this, '🇩🇰', 'DKK', 'Denmark')">
+            <span>🇩🇰</span> Denmark <span class="header__currency-code-sm">DKK kr</span>
+          </button>
+        </div>
       </div>
+
+      <script>
+        function selectCountry(el, flag, currency, name) {
+          document.getElementById('active-flag').textContent = flag;
+          document.getElementById('active-currency').textContent = currency;
+          document.querySelectorAll('.header__currency-option').forEach(o => o.classList.remove('header__currency-option--active'));
+          el.classList.add('header__currency-option--active');
+          el.closest('.header__currency-wrapper').classList.remove('header__currency-wrapper--open');
+        }
+        document.addEventListener('click', function(e) {
+          if (!e.target.closest('.header__currency-wrapper')) {
+            document.querySelectorAll('.header__currency-wrapper--open').forEach(w => w.classList.remove('header__currency-wrapper--open'));
+          }
+        });
+      </script>
 
       {%- comment -%} Search {%- endcomment -%}
       <a href="{{ routes.search_url }}" class="header__icon" aria-label="Search">
@@ -66,15 +113,80 @@
         </svg>
       </a>
 
-      {%- comment -%} Account {%- endcomment -%}
-      {% if shop.customer_accounts_enabled %}
-        <a href="{{ routes.account_url }}" class="header__icon" aria-label="Account">
+      {%- comment -%} Account dropdown (Elkjøp-style hover) {%- endcomment -%}
+      <div class="header__account-wrapper">
+        <button class="header__icon header__account-trigger" aria-label="Account">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
             <circle cx="12" cy="7" r="4"/>
           </svg>
-        </a>
-      {% endif %}
+        </button>
+
+        <div class="header__account-dropdown">
+          {% if customer %}
+            {%- comment -%} Logged in state {%- endcomment -%}
+            <div class="account-dd__header">
+              <div class="account-dd__avatar">{{ customer.first_name | slice: 0 }}</div>
+              <div>
+                <p class="account-dd__name">{{ customer.first_name }} {{ customer.last_name }}</p>
+                <p class="account-dd__email">{{ customer.email }}</p>
+              </div>
+            </div>
+            <div class="account-dd__divider"></div>
+            <a href="{{ routes.account_url }}" class="account-dd__link">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              My Account
+            </a>
+            <a href="{{ routes.account_url }}#orders" class="account-dd__link">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="7" width="18" height="14" rx="1"/><path d="M8 7V5a4 4 0 018 0v2"/></svg>
+              My Orders
+            </a>
+            <a href="{{ routes.account_addresses_url }}" class="account-dd__link">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              My Addresses
+            </a>
+            <div class="account-dd__divider"></div>
+            <a href="{{ routes.account_logout_url }}" class="account-dd__link account-dd__link--logout">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              Sign Out
+            </a>
+          {% else %}
+            {%- comment -%} Logged out state {%- endcomment -%}
+            <div class="account-dd__welcome">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#141414" stroke-width="1.2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <p class="account-dd__welcome-title">Welcome to TCP Clothing</p>
+              <p class="account-dd__welcome-text">Sign in for a personalised experience</p>
+            </div>
+
+            {%- comment -%} Inline login form {%- endcomment -%}
+            {% form 'customer_login', class: 'account-dd__form', id: 'header-login-form' %}
+              <input type="email" name="customer[email]" placeholder="Email address" class="account-dd__input" required autocomplete="email">
+              <input type="password" name="customer[password]" placeholder="Password" class="account-dd__input" required autocomplete="current-password">
+              <button type="submit" class="btn btn--primary account-dd__btn">SIGN IN</button>
+            {% endform %}
+
+            <div class="account-dd__divider"></div>
+
+            <div class="account-dd__options">
+              <a href="{{ routes.account_register_url }}" class="account-dd__option">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+                <div>
+                  <span class="account-dd__option-title">Create Account</span>
+                  <span class="account-dd__option-desc">Get 10% off your first order</span>
+                </div>
+              </a>
+
+              <a href="{{ routes.cart_url }}" class="account-dd__option">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="7" width="18" height="14" rx="1"/><path d="M8 7V5a4 4 0 018 0v2"/></svg>
+                <div>
+                  <span class="account-dd__option-title">Continue as Guest</span>
+                  <span class="account-dd__option-desc">Checkout without an account</span>
+                </div>
+              </a>
+            </div>
+          {% endif %}
+        </div>
+      </div>
 
       {%- comment -%} Cart {%- endcomment -%}
       <a href="{{ routes.cart_url }}" class="header__icon header__icon--cart" aria-label="Cart">
@@ -138,17 +250,9 @@
     flex-shrink: 0;
   }
 
-  .header__logo-tcp {
-    font-size: 1.5rem;
-    font-weight: 700;
-    letter-spacing: 2px;
-  }
-
-  .header__logo-clothing {
-    font-size: 0.625rem;
-    font-weight: 400;
-    letter-spacing: 3px;
-    text-transform: uppercase;
+  .header__logo-img {
+    height: 48px;
+    width: auto;
   }
 
   /* Nav */
@@ -173,10 +277,27 @@
     color: var(--color-foreground);
     transition: color 0.2s;
     white-space: nowrap;
+    position: relative;
+    padding-bottom: 4px;
+  }
+
+  .header__nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1.5px;
+    background: var(--color-accent);
+    transition: width 0.3s ease;
   }
 
   .header__nav-link:hover {
     color: var(--color-accent);
+  }
+
+  .header__nav-link:hover::after {
+    width: 100%;
   }
 
   .header__nav-link--sale {
@@ -191,11 +312,78 @@
     flex-shrink: 0;
   }
 
-  .header__currency {
+  .header__currency-wrapper {
+    position: relative;
+  }
+
+  .header__currency-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
     font-size: 0.75rem;
     font-weight: 500;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
     cursor: pointer;
+    padding: 6px 10px;
+    border-radius: 4px;
+    transition: background 0.2s;
+  }
+
+  .header__currency-btn:hover {
+    background: var(--color-light-gray);
+  }
+
+  .header__currency-flag {
+    font-size: 1rem;
+  }
+
+  .header__currency-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 8px;
+    background: var(--color-white);
+    border: 1px solid var(--color-light-gray);
+    border-radius: 6px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+    min-width: 220px;
+    z-index: 300;
+    padding: 8px 0;
+    max-height: 360px;
+    overflow-y: auto;
+  }
+
+  .header__currency-wrapper--open .header__currency-dropdown {
+    display: block;
+  }
+
+  .header__currency-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px 16px;
+    font-size: 0.8125rem;
+    color: var(--color-foreground);
+    cursor: pointer;
+    transition: background 0.15s;
+    text-align: left;
+  }
+
+  .header__currency-option:hover {
+    background: var(--color-light-gray);
+  }
+
+  .header__currency-option--active {
+    font-weight: 600;
+    background: #f5f2ef;
+  }
+
+  .header__currency-code-sm {
+    margin-left: auto;
+    font-size: 0.6875rem;
+    color: var(--color-medium-gray);
   }
 
   .header__icon {
@@ -225,6 +413,207 @@
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+
+  /* Account dropdown */
+  .header__account-wrapper {
+    position: relative;
+  }
+
+  .header__account-trigger {
+    cursor: pointer;
+  }
+
+  .header__account-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 12px);
+    right: -20px;
+    width: 320px;
+    background: var(--color-white);
+    border: 1px solid var(--color-light-gray);
+    border-radius: 8px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.14);
+    z-index: 400;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .header__account-wrapper:hover .header__account-dropdown,
+  .header__account-dropdown:hover {
+    display: block;
+  }
+
+  /* Arrow */
+  .header__account-dropdown::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    right: 28px;
+    width: 12px;
+    height: 12px;
+    background: var(--color-white);
+    border-left: 1px solid var(--color-light-gray);
+    border-top: 1px solid var(--color-light-gray);
+    transform: rotate(45deg);
+  }
+
+  /* Welcome section */
+  .account-dd__welcome {
+    padding: 24px 24px 20px;
+    text-align: center;
+  }
+
+  .account-dd__welcome svg {
+    margin: 0 auto 12px;
+  }
+
+  .account-dd__welcome-title {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .account-dd__welcome-text {
+    font-size: 0.75rem;
+    color: var(--color-medium-gray);
+  }
+
+  /* Inline login form */
+  .account-dd__form {
+    padding: 0 24px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .account-dd__input {
+    padding: 11px 14px;
+    border: 1px solid var(--color-light-gray);
+    border-radius: 4px;
+    font-size: 0.8125rem;
+    background: var(--color-background);
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+  }
+
+  .account-dd__input:focus {
+    border-color: var(--color-accent);
+  }
+
+  .account-dd__input::placeholder {
+    color: #b5b0ab;
+  }
+
+  .account-dd__btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 0.6875rem;
+  }
+
+  .account-dd__divider {
+    height: 1px;
+    background: var(--color-light-gray);
+    margin: 0;
+  }
+
+  /* Options (Create Account / Guest) */
+  .account-dd__options {
+    padding: 8px 0;
+  }
+
+  .account-dd__option {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 24px;
+    text-decoration: none;
+    color: var(--color-foreground);
+    transition: background 0.15s;
+  }
+
+  .account-dd__option:hover {
+    background: #f9f7f5;
+  }
+
+  .account-dd__option svg {
+    flex-shrink: 0;
+    color: var(--color-medium-gray);
+  }
+
+  .account-dd__option-title {
+    display: block;
+    font-size: 0.8125rem;
+    font-weight: 500;
+  }
+
+  .account-dd__option-desc {
+    display: block;
+    font-size: 0.6875rem;
+    color: var(--color-medium-gray);
+    margin-top: 2px;
+  }
+
+  /* Logged-in header */
+  .account-dd__header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 20px 24px;
+  }
+
+  .account-dd__avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    color: var(--color-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+
+  .account-dd__name {
+    font-weight: 600;
+    font-size: 0.875rem;
+  }
+
+  .account-dd__email {
+    font-size: 0.75rem;
+    color: var(--color-medium-gray);
+  }
+
+  .account-dd__link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 24px;
+    font-size: 0.8125rem;
+    color: var(--color-foreground);
+    text-decoration: none;
+    transition: background 0.15s;
+  }
+
+  .account-dd__link:hover {
+    background: #f9f7f5;
+  }
+
+  .account-dd__link svg {
+    color: var(--color-medium-gray);
+    flex-shrink: 0;
+  }
+
+  .account-dd__link--logout {
+    color: var(--color-medium-gray);
+  }
+
+  .account-dd__link--logout:hover {
+    color: #dc2626;
+    background: #fef2f2;
   }
 
   .header__divider {
