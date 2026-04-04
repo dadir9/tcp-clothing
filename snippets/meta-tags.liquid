@@ -17,6 +17,8 @@
   endif
 %}
 
+<meta name="description" content="{{ page_description | default: shop.description | default: shop.name | escape }}">
+
 <meta
   property="og:site_name"
   content="{{ shop.name }}"
@@ -97,9 +99,125 @@
   href="{{ canonical_url }}"
 >
 
-{% if page_description %}
-  <meta
-    name="description"
-    content="{{ page_description | escape }}"
-  >
-{% endif %}
+{%- comment -%} Hreflang tags for multi-language support {%- endcomment -%}
+{% for locale in shop.published_locales %}
+  <link rel="alternate" hreflang="{{ locale.iso_code }}" href="{{ canonical_url | replace: request.locale.root_url, locale.root_url }}">
+{% endfor %}
+<link rel="alternate" hreflang="x-default" href="{{ canonical_url }}">
+
+{%- comment -%} Organization + ClothingStore structured data {%- endcomment -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": ["Organization", "ClothingStore"],
+  "@id": {{ request.origin | append: '/#organization' | json }},
+  "name": {{ shop.name | json }},
+  "url": {{ request.origin | json }},
+  "description": {{ shop.description | default: 'European summer fashion — swimwear, linen and festival wear for UK, France and Netherlands.' | json }},
+  {% if shop.brand.logo %}
+    "logo": {
+      "@type": "ImageObject",
+      "url": {{ shop.brand.logo | image_url: width: 500 | prepend: 'https:' | json }},
+      "width": 500
+    },
+  {% endif %}
+  "areaServed": ["GB", "FR", "NL", "DE", "BE", "ES", "IT", "SE", "DK"],
+  "currenciesAccepted": "GBP, EUR, SEK, DKK",
+  "paymentAccepted": "Credit Card, Klarna, iDEAL, PayPal, Apple Pay, Google Pay",
+  "sameAs": [
+    "https://www.instagram.com/tcpclothing",
+    "https://www.tiktok.com/@tcpclothing",
+    "https://www.pinterest.com/tcpclothing",
+    "https://www.facebook.com/tcpclothing"
+  ],
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "customer service",
+    "email": {{ shop.email | json }},
+    "availableLanguage": ["English", "French", "Dutch"]
+  }
+}
+</script>
+
+{%- comment -%} WebSite with SearchAction {%- endcomment -%}
+{%- assign search_target = request.origin | append: routes.search_url | append: '?q={search_term_string}' -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": {{ request.origin | append: '/#website' | json }},
+  "name": {{ shop.name | json }},
+  "url": {{ request.origin | json }},
+  "inLanguage": ["en", "fr", "nl"],
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": {{ search_target | json }}
+    },
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+
+{%- comment -%} BreadcrumbList for collection and product pages {%- endcomment -%}
+{%- if request.page_type == 'collection' -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": {{ shop.name | json }},
+      "item": {{ request.origin | json }}
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": {{ collection.title | json }},
+      "item": {{ collection.url | prepend: request.origin | json }}
+    }
+  ]
+}
+</script>
+{%- endif -%}
+
+{%- if request.page_type == 'product' -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": {{ shop.name | json }},
+      "item": {{ request.origin | json }}
+    },
+    {%- if collection -%}
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": {{ collection.title | json }},
+      "item": {{ collection.url | prepend: request.origin | json }}
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": {{ product.title | json }},
+      "item": {{ product.url | prepend: request.origin | json }}
+    }
+    {%- else -%}
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": {{ product.title | json }},
+      "item": {{ product.url | prepend: request.origin | json }}
+    }
+    {%- endif -%}
+  ]
+}
+</script>
+{%- endif -%}
