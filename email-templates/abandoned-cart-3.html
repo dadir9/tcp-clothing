@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Last chance — TCP Clothing</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background-color: #F0ECEA; font-family: 'Inter', Arial, sans-serif; -webkit-text-size-adjust: 100%; }
+    table { border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+    img { border: 0; height: auto; line-height: 100%; -ms-interpolation-mode: bicubic; }
+    a { color: #C2946B; text-decoration: none; }
+    @media only screen and (max-width: 620px) {
+      .wrapper { width: 100% !important; }
+      .content-pad { padding: 32px 24px !important; }
+      .btn { width: 100% !important; }
+    }
+  </style>
+</head>
+<body style="margin:0; padding:0; background-color:#F0ECEA;">
+
+<!-- Step 3 of 3: Last chance + discount offer, sent ~72hrs after abandonment -->
+<div style="display:none; max-height:0; overflow:hidden; font-size:1px; color:#F0ECEA;">
+  We saved you 10% — but this is our last reminder.&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌
+</div>
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#F0ECEA; padding:32px 16px;">
+  <tr>
+    <td align="center">
+      <table role="presentation" class="wrapper" width="600" cellpadding="0" cellspacing="0" style="max-width:600px; width:100%;">
+
+        <!-- HEADER -->
+        <tr>
+          <td style="background-color:#141414; padding:28px 40px; text-align:center;">
+            <img src="https://cdn.shopify.com/s/files/1/tcp-clothing/logo-white.png" alt="TCP Clothing" width="48" height="48" style="display:inline-block; width:48px; height:48px;">
+            <p style="color:#FFFFFF; font-family:'Inter',Arial,sans-serif; font-size:11px; font-weight:600; letter-spacing:3px; text-transform:uppercase; margin-top:12px; margin-bottom:0;">TCP CLOTHING</p>
+          </td>
+        </tr>
+        <tr>
+          <td style="background-color:#C2946B; padding:4px 0;"></td>
+        </tr>
+
+        <!-- DISCOUNT BANNER -->
+        <tr>
+          <td style="background-color:#C2946B; padding:24px 48px; text-align:center;">
+            <p style="font-family:'Inter',Arial,sans-serif; font-size:13px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#FFFFFF; margin-bottom:8px;">One-Time Offer</p>
+            <p style="font-family:'Inter',Arial,sans-serif; font-size:36px; font-weight:300; color:#FFFFFF; margin-bottom:8px;">10% Off</p>
+            <p style="font-family:'Inter',Arial,sans-serif; font-size:12px; color:rgba(255,255,255,0.8);">Use code <strong style="letter-spacing:2px;">COMEBACK10</strong> at checkout</p>
+          </td>
+        </tr>
+
+        <!-- MAIN -->
+        <tr>
+          <td class="content-pad" style="background-color:#FDF9F4; padding:48px;">
+            <p style="font-family:'Inter',Arial,sans-serif; font-size:11px; font-weight:600; letter-spacing:3px; text-transform:uppercase; color:#C2946B; margin-bottom:16px;">Final Reminder</p>
+            <h1 style="font-family:'Inter',Arial,sans-serif; font-size:32px; font-weight:300; line-height:42px; color:#141414; margin-bottom:20px;">This is the last<br>time we'll ask.</h1>
+            <p style="font-family:'Inter',Arial,sans-serif; font-size:15px; line-height:26px; color:#8C8580; margin-bottom:32px;">We're clearing your cart after today. But before we do — here's 10% off your order, just for you. No strings attached.</p>
+
+            <!-- Cart item -->
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #F0ECEA; border-radius:2px; margin-bottom:32px;">
+              <tr>
+                <td style="padding:20px;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                      <td width="96" style="vertical-align:top; padding-right:16px;">
+                        <div style="background-color:#F0ECEA; width:96px; height:96px; border-radius:2px;"></div>
+                      </td>
+                      <td style="vertical-align:top;">
+                        <p style="font-family:'Inter',Arial,sans-serif; font-size:13px; font-weight:600; color:#141414; margin-bottom:4px;">{{ line_item.title }}</p>
+                        <p style="font-family:'Inter',Arial,sans-serif; font-size:12px; color:#8C8580; margin-bottom:4px;">{{ line_item.variant_title }}</p>
+                        <table role="presentation" cellpadding="0" cellspacing="0">
+                          <tr>
+                            <td style="padding-right:8px;">
+                              <p style="font-family:'Inter',Arial,sans-serif; font-size:13px; color:#8C8580; text-decoration:line-through;">{{ line_item.price | money }}</p>
+                            </td>
+                            <td>
+                              <p style="font-family:'Inter',Arial,sans-serif; font-size:13px; color:#C2946B; font-weight:600;">{{ line_item.price | times: 0.9 | money }}</p>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+
+            <!-- Discount code -->
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:2px dashed #C2946B; border-radius:2px; margin-bottom:32px;">
+              <tr>
+                <td style="padding:20px; text-align:center;">
+                  <p style="font-family:'Inter',Arial,sans-serif; font-size:11px; color:#8C8580; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px;">Your Discount Code</p>
+                  <p style="font-family:'Inter',Arial,sans-serif; font-size:24px; font-weight:600; letter-spacing:4px; color:#141414;">COMEBACK10</p>
+                </td>
+              </tr>
+            </table>
+
+            <!-- CTA -->
+            <table role="presentation" cellpadding="0" cellspacing="0">
+              <tr>
+                <td class="btn" style="background-color:#C2946B; border-radius:2px;">
+                  <a href="{{ checkout_url }}?discount=COMEBACK10" style="display:inline-block; font-family:'Inter',Arial,sans-serif; font-size:11px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#FFFFFF; padding:16px 32px; text-decoration:none;">Claim My 10% Off</a>
+                </td>
+              </tr>
+            </table>
+
+            <p style="font-family:'Inter',Arial,sans-serif; font-size:11px; color:#8C8580; margin-top:16px;">Code expires in 48 hours. One use per customer.</p>
+          </td>
+        </tr>
+
+        <!-- FOOTER -->
+        <tr>
+          <td style="background-color:#141414; padding:32px 48px;">
+            <p style="font-family:'Inter',Arial,sans-serif; font-size:11px; color:#8C8580; margin-bottom:8px;">TCP Clothing · London, United Kingdom</p>
+            <p style="font-family:'Inter',Arial,sans-serif; font-size:11px; color:#8C8580;">
+              <a href="{{ unsubscribe_url }}" style="color:#8C8580; text-decoration:underline;">Unsubscribe</a> &nbsp;·&nbsp;
+              <a href="{{ shop.url }}/policies/privacy-policy" style="color:#8C8580; text-decoration:underline;">Privacy Policy</a>
+            </p>
+          </td>
+        </tr>
+
+      </table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Order Confirmed — TCP Clothing</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background-color: #F0ECEA; font-family: 'Inter', Arial, sans-serif; -webkit-text-size-adjust: 100%; }
+    table { border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+    img { border: 0; height: auto; line-height: 100%; -ms-interpolation-mode: bicubic; }
+    a { color: #C2946B; text-decoration: none; }
+    @media only screen and (max-width: 620px) {
+      .wrapper { width: 100% !important; }
+      .content-pad { padding: 32px 24px !important; }
+      .summary-col { display: block !important; width: 100% !important; padding: 0 0 8px 0 !important; }
+    }
+  </style>
+</head>
+<body style="margin:0; padding:0; background-color:#F0ECEA;">
+
+<div style="display:none; max-height:0; overflow:hidden; font-size:1px; color:#F0ECEA;">
+  Your TCP Clothing order is confirmed — here's your receipt.&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌
+</div>
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#F0ECEA; padding:32px 16px;">
+  <tr>
+    <td align="center">
+      <table role="presentation" class="wrapper" width="600" cellpadding="0" cellspacing="0" style="max-width:600px; width:100%;">
+
+        <!-- HEADER -->
+        <tr>
+          <td style="background-color:#141414; padding:28px 40px; text-align:center;">
+            <img src="https://cdn.shopify.com/s/files/1/tcp-clothing/logo-white.png" alt="TCP Clothing" width="48" height="48" style="display:inline-block; width:48px; height:48px;">
+            <p style="color:#FFFFFF; font-family:'Inter',Arial,sans-serif; font-size:11px; font-weight:600; letter-spacing:3px; text-transform:uppercase; margin-top:12px; margin-bottom:0;">TCP CLOTHING</p>
+          </td>
+        </tr>
+        <tr>
+          <td style="background-color:#C2946B; padding:4px 0;"></td>
+        </tr>
+
+        <!-- ORDER CONFIRMED -->
+        <tr>
+          <td class="content-pad" style="background-color:#FDF9F4; padding:48px 48px 40px;">
+            <p style="font-family:'Inter',Arial,sans-serif; font-size:11px; font-weight:600; letter-spacing:3px; text-transform:uppercase; color:#C2946B; margin-bottom:16px;">Order Confirmed</p>
+            <h1 style="font-family:'Inter',Arial,sans-serif; font-size:32px; font-weight:300; line-height:42px; color:#141414; margin-bottom:16px;">Thank you,<br>{{ order.billing_address.first_name }}.</h1>
+            <p style="font-family:'Inter',Arial,sans-serif; font-size:15px; line-height:26px; color:#8C8580; margin-bottom:0;">Your order <strong style="color:#141414;">#{{ order.order_number }}</strong> has been confirmed. We'll send you a shipping notification once it's on its way.</p>
+          </td>
+        </tr>
+
+        <!-- ORDER DETAILS -->
+        <tr>
+          <td style="background-color:#FDF9F4; padding:0 48px 40px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #F0ECEA;">
+
+              <!-- Header row -->
+              <tr style="background-color:#F0ECEA;">
+                <td style="padding:12px 16px;">
+                  <p style="font-family:'Inter',Arial,sans-serif; font-size:10px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#8C8580;">Item</p>
+                </td>
+                <td style="padding:12px 16px; text-align:right;">
+                  <p style="font-family:'Inter',Arial,sans-serif; font-size:10px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#8C8580;">Price</p>
+                </td>
+              </tr>
+
+              <!-- Line items — rendered via Shopify/Klaviyo liquid loop -->
+              {% for line_item in order.line_items %}
+              <tr style="border-top:1px solid #F0ECEA;">
+                <td style="padding:16px;">
+                  <table role="presentation" cellpadding="0" cellspacing="0">
+                    <tr>
+                      <td width="64" style="padding-right:12px; vertical-align:top;">
+                        <div style="background-color:#F0ECEA; width:64px; height:64px; border-radius:2px;">
+                          <!-- {{ line_item.image | img_url: '200x' | img_tag }} -->
+                        </div>
+                      </td>
+                      <td style="vertical-align:top;">
+                        <p style="font-family:'Inter',Arial,sans-serif; font-size:13px; font-weight:600; color:#141414; margin-bottom:4px;">{{ line_item.title }}</p>
+                        <p style="font-family:'Inter',Arial,sans-serif; font-size:12px; color:#8C8580; margin-bottom:2px;">{{ line_item.variant_title }}</p>
+                        <p style="font-family:'Inter',Arial,sans-serif; font-size:12px; color:#8C8580;">Qty: {{ line_item.quantity }}</p>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+                <td style="padding:16px; text-align:right; vertical-align:middle;">
+                  <p style="font-family:'Inter',Arial,sans-serif; font-size:13px; font-weight:600; color:#141414;">{{ line_item.line_price | money }}</p>
+                </td>
+              </tr>
+              {% endfor %}
+
+              <!-- Subtotal / Shipping / Total -->
+              <tr style="border-top:1px solid #F0ECEA;">
+                <td style="padding:12px 16px;" colspan="2">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                      <td><p style="font-family:'Inter',Arial,sans-serif; font-size:13px; color:#8C8580;">Subtotal</p></td>
+                      <td style="text-align:right;"><p style="font-family:'Inter',Arial,sans-serif; font-size:13px; color:#141414;">{{ order.subtotal_price | money }}</p></td>
+                    </tr>
+                    <tr>
+                      <td style="padding-top:8px;"><p style="font-family:'Inter',Arial,sans-serif; font-size:13px; color:#8C8580;">Shipping</p></td>
+                      <td style="padding-top:8px; text-align:right;"><p style="font-family:'Inter',Arial,sans-serif; font-size:13px; color:#141414;">{{ order.shipping_price | money }}</p></td>
+                    </tr>
+                    {% if order.total_discounts > 0 %}
+                    <tr>
+                      <td style="padding-top:8px;"><p style="font-family:'Inter',Arial,sans-serif; font-size:13px; color:#C2946B;">Discount</p></td>
+                      <td style="padding-top:8px; text-align:right;"><p style="font-family:'Inter',Arial,sans-serif; font-size:13px; color:#C2946B;">-{{ order.total_discounts | money }}</p></td>
+                    </tr>
+                    {% endif %}
+                    <tr>
+                      <td style="padding-top:16px; border-top:1px solid #F0ECEA; margin-top:8px;">
+                        <p style="font-family:'Inter',Arial,sans-serif; font-size:14px; font-weight:600; color:#141414; padding-top:16px;">Total</p>
+                      </td>
+                      <td style="text-align:right; border-top:1px solid #F0ECEA;">
+                        <p style="font-family:'Inter',Arial,sans-serif; font-size:14px; font-weight:600; color:#141414; padding-top:16px;">{{ order.total_price | money }}</p>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- SHIPPING ADDRESS -->
+        <tr>
+          <td style="background-color:#FDF9F4; padding:0 48px 48px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+                <td width="50%" style="padding-right:24px; vertical-align:top;">
+                  <p style="font-family:'Inter',Arial,sans-serif; font-size:11px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#141414; margin-bottom:12px;">Shipping to</p>
+                  <p style="font-family:'Inter',Arial,sans-serif; font-size:13px; color:#8C8580; line-height:22px;">
+                    {{ order.shipping_address.name }}<br>
+                    {{ order.shipping_address.address1 }}<br>
+                    {% if order.shipping_address.address2 != "" %}{{ order.shipping_address.address2 }}<br>{% endif %}
+                    {{ order.shipping_address.city }}, {{ order.shipping_address.zip }}<br>
+                    {{ order.shipping_address.country }}
+                  </p>
+                </td>
+                <td width="50%" style="vertical-align:top;">
+                  <p style="font-family:'Inter',Arial,sans-serif; font-size:11px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#141414; margin-bottom:12px;">Payment</p>
+                  <p style="font-family:'Inter',Arial,sans-serif; font-size:13px; color:#8C8580; line-height:22px;">
+                    {{ order.payment_gateway }}<br>
+                    {{ order.credit_card_company }} ending {{ order.credit_card_last_four }}
+                  </p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- WHAT'S NEXT -->
+        <tr>
+          <td style="background-color:#141414; padding:40px 48px;">
+            <p style="font-family:'Inter',Arial,sans-serif; font-size:11px; font-weight:600; letter-spacing:3px; text-transform:uppercase; color:#C2946B; margin-bottom:20px;">What Happens Next</p>
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+                <td style="padding-bottom:16px;">
+                  <p style="font-family:'Inter',Arial,sans-serif; font-size:13px; color:#F0ECEA; margin-bottom:4px;">1. Processing (1–2 business days)</p>
+                  <p style="font-family:'Inter',Arial,sans-serif; font-size:12px; color:#8C8580;">We'll pick, pack, and prepare your order.</p>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding-bottom:16px;">
+                  <p style="font-family:'Inter',Arial,sans-serif; font-size:13px; color:#F0ECEA; margin-bottom:4px;">2. Dispatch Notification</p>
+                  <p style="font-family:'Inter',Arial,sans-serif; font-size:12px; color:#8C8580;">You'll receive a tracking link by email once shipped.</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p style="font-family:'Inter',Arial,sans-serif; font-size:13px; color:#F0ECEA; margin-bottom:4px;">3. Delivery</p>
+                  <p style="font-family:'Inter',Arial,sans-serif; font-size:12px; color:#8C8580;">UK: 2–4 days · Europe: 4–7 days.</p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- FOOTER -->
+        <tr>
+          <td style="background-color:#141414; padding:32px 48px; border-top:1px solid #2A2A2A;">
+            <p style="font-family:'Inter',Arial,sans-serif; font-size:11px; color:#8C8580; margin-bottom:8px;">
+              Questions? <a href="mailto:hello@tcpclothing.com" style="color:#C2946B; text-decoration:underline;">hello@tcpclothing.com</a>
+            </p>
+            <p style="font-family:'Inter',Arial,sans-serif; font-size:11px; color:#8C8580; margin-bottom:8px;">TCP Clothing · London, United Kingdom</p>
+            <p style="font-family:'Inter',Arial,sans-serif; font-size:11px; color:#8C8580;">
+              <a href="{{ unsubscribe_url }}" style="color:#8C8580; text-decoration:underline;">Unsubscribe</a> &nbsp;·&nbsp;
+              <a href="{{ shop.url }}/policies/privacy-policy" style="color:#8C8580; text-decoration:underline;">Privacy Policy</a>
+            </p>
+          </td>
+        </tr>
+
+      </table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>
