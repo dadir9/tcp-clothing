@@ -1,0 +1,290 @@
+{% comment %}
+  About Us page section — TCP Clothing brand story
+{% endcomment %}
+
+<div class="about-hero">
+  <div class="page-container">
+    <span class="section-label">Our Story</span>
+    <h1 class="about-hero__title">Born by the Water,<br>Made for the Journey</h1>
+    <p class="about-hero__lead">TCP Clothing is a European summer fashion brand for those who live between the festivals, the coastline, and the city. We design pieces that travel with you — from Hackney rooftops to Côte d'Azur beaches to Amsterdam canals.</p>
+  </div>
+</div>
+
+<div class="about-values page-container">
+  <div class="about-values__grid">
+    <div class="about-values__item">
+      <span class="about-values__icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M12 6v6l4 2"/></svg>
+      </span>
+      <h3>Timeless Quality</h3>
+      <p>Every piece is crafted to last. We source lightweight linens, sustainable cottons, and natural fibres built for warm-weather wear and years of use.</p>
+    </div>
+    <div class="about-values__item">
+      <span class="about-values__icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      </span>
+      <h3>Made for Europe</h3>
+      <p>Designed with UK, French, and Dutch summers in mind — the festivals, the markets, the terraces, and the beaches that define European warm-weather life.</p>
+    </div>
+    <div class="about-values__item">
+      <span class="about-values__icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </span>
+      <h3>Sustainable Practice</h3>
+      <p>We're committed to responsible sourcing and reducing our footprint. Smaller collections, better materials, and packaging that doesn't cost the planet.</p>
+    </div>
+  </div>
+</div>
+
+<div class="about-mission">
+  <div class="page-container">
+    <div class="about-mission__inner">
+      <div class="about-mission__text">
+        <span class="section-label">Our Mission</span>
+        <h2>Style That Moves With You</h2>
+        <p>We believe summer fashion shouldn't be complicated. TCP Clothing makes pieces that work at Glastonbury, in Marseille, at Koningsdag — wherever you take them. Clean lines, warm tones, and fabric that feels as good at midnight as it does at noon.</p>
+        <p>We ship across the UK, France, Netherlands, and all major EU markets. Fast, simple, and always with a straightforward return policy.</p>
+      </div>
+      <div class="about-mission__visual">
+        <div class="about-mission__placeholder">
+          <span>TCP</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="about-markets page-container">
+  <span class="section-label">Where We Ship</span>
+  <h2>Across Europe</h2>
+  <div class="about-markets__grid">
+    <div class="about-markets__item">
+      <span class="about-markets__flag">🇬🇧</span>
+      <strong>United Kingdom</strong>
+      <span>GBP · Royal Mail &amp; DPD</span>
+    </div>
+    <div class="about-markets__item">
+      <span class="about-markets__flag">🇫🇷</span>
+      <strong>France</strong>
+      <span>EUR · Colissimo &amp; DPD</span>
+    </div>
+    <div class="about-markets__item">
+      <span class="about-markets__flag">🇳🇱</span>
+      <strong>Netherlands</strong>
+      <span>EUR · PostNL &amp; DPD</span>
+    </div>
+    <div class="about-markets__item">
+      <span class="about-markets__flag">🇩🇪</span>
+      <strong>Germany</strong>
+      <span>EUR · DPD</span>
+    </div>
+    <div class="about-markets__item">
+      <span class="about-markets__flag">🇧🇪</span>
+      <strong>Belgium</strong>
+      <span>EUR · DPD</span>
+    </div>
+    <div class="about-markets__item">
+      <span class="about-markets__flag">🇪🇸</span>
+      <strong>Spain</strong>
+      <span>EUR · DPD</span>
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .about-hero {
+    background: var(--color-background);
+    padding: 80px 0 64px;
+    border-bottom: 1px solid var(--color-border, #E8E2DC);
+  }
+
+  .about-hero__title {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin: 16px 0 24px;
+    color: var(--color-foreground);
+  }
+
+  .about-hero__lead {
+    font-size: 1.125rem;
+    color: var(--color-muted, #8C8580);
+    max-width: 640px;
+    line-height: 1.75;
+  }
+
+  .about-values {
+    padding: 80px 0;
+  }
+
+  .about-values__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 48px;
+  }
+
+  @media (max-width: 768px) {
+    .about-values__grid {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+  }
+
+  .about-values__item {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .about-values__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border: 1px solid var(--color-accent, #C2946B);
+    border-radius: 2px;
+    color: var(--color-accent, #C2946B);
+  }
+
+  .about-values__item h3 {
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    margin: 0;
+  }
+
+  .about-values__item p {
+    font-size: 0.9375rem;
+    color: var(--color-muted, #8C8580);
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  .about-mission {
+    background: var(--color-foreground, #141414);
+    color: #FDF9F4;
+    padding: 80px 0;
+  }
+
+  .about-mission__inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  @media (max-width: 768px) {
+    .about-mission__inner {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+  }
+
+  .about-mission .section-label {
+    color: var(--color-accent, #C2946B);
+  }
+
+  .about-mission h2 {
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    font-weight: 300;
+    margin: 12px 0 24px;
+    letter-spacing: -0.01em;
+  }
+
+  .about-mission p {
+    color: rgba(253, 249, 244, 0.7);
+    line-height: 1.75;
+    margin-bottom: 16px;
+    font-size: 0.9375rem;
+  }
+
+  .about-mission__placeholder {
+    aspect-ratio: 4/5;
+    background: rgba(194, 148, 107, 0.15);
+    border: 1px solid rgba(194, 148, 107, 0.3);
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: 300;
+    letter-spacing: 4px;
+    color: rgba(253, 249, 244, 0.3);
+  }
+
+  .about-markets {
+    padding: 80px 0;
+  }
+
+  .about-markets h2 {
+    font-size: 2rem;
+    font-weight: 300;
+    margin: 12px 0 48px;
+  }
+
+  .about-markets__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  @media (max-width: 768px) {
+    .about-markets__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .about-markets__item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 24px;
+    border: 1px solid var(--color-border, #E8E2DC);
+    border-radius: 2px;
+  }
+
+  .about-markets__flag {
+    font-size: 1.5rem;
+  }
+
+  .about-markets__item strong {
+    font-size: 0.9375rem;
+    font-weight: 500;
+  }
+
+  .about-markets__item span:last-child {
+    font-size: 0.8125rem;
+    color: var(--color-muted, #8C8580);
+  }
+
+  .page-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  @media (max-width: 768px) {
+    .page-container {
+      padding: 0 20px;
+    }
+  }
+
+  .section-label {
+    display: block;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--color-accent, #C2946B);
+    margin-bottom: 8px;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "About Us",
+  "settings": []
+}
+{% endschema %}
